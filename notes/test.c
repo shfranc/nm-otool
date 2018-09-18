@@ -16,9 +16,8 @@ void	print_output(int nsyms, int symoff, int stroff, void *ptr)
 	stringtable = ptr + stroff;
 
 	i = 0;
-	while (i < nsyms)
+	while (++i < nsyms)
 	{
-		++i;
 		printf("%s\n", stringtable + elem[i].n_un.n_strx);
 	}
 
@@ -37,7 +36,7 @@ void	handle_64(char *ptr)
 
 	lc = (void *)ptr + sizeof(*header);
 	i = 0;
-	while (i < ncmds)
+	while (++i < ncmds)
 	{
 		if (lc->cmd == LC_SYMTAB)
 		{
