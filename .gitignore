@@ -1,6 +1,10 @@
 # BIN
+a.out
 ft_nm
 ft_otool
+
+# LIB
+libft
 
 # OBJS
 *.o

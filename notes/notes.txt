@@ -9,5 +9,9 @@ FAT binaries: binaires qui contiennent plusieurs architectures.
 
 Load commands: table des matières des segments du binaire avec leur offset.
 
+Mach-o file basic structure
 - HEADER
-- LOAD COMMAND
+- LOAD COMMANDS
+- DATA
+	segments [...]
+		sections [...]
