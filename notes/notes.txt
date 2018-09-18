@@ -1,0 +1,13 @@
+NM OTOOL
+========
+
+Mach-O File Format
+
+lorsqu'un fd est déjà ouvert, utiliser stat et non fstat pour éviter les "race condition" -> 2 actions effectuées quasi simultanément.
+
+FAT binaries: binaires qui contiennent plusieurs architectures.
+
+Load commands: table des matières des segments du binaire avec leur offset.
+
+- HEADER
+- LOAD COMMAND

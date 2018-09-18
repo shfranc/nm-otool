@@ -1,0 +1,9 @@
+# BIN
+ft_nm
+ft_otool
+
+# OBJS
+*.o
+
+# SWP
+*.swp
