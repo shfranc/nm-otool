@@ -8,7 +8,8 @@ PATH_SRCS = srcs
 PATH_OBJS = objs
 
 SRCS = $(addprefix $(PATH_SRCS)/, main.c \
-	ft_nm.c )
+	ft_nm.c \
+	options.c )
 OBJS = $(SRCS:$(PATH_SRCS)/%.c=$(PATH_OBJS)/%.o)
 INCS = incs $(PATH_LIB)/includes
 
@@ -24,7 +25,7 @@ RESET = \033[00m
 all: $(NAME)
 
 $(NAME): $(PATH_LIB)/$(LIB) $(OBJS)
-	$(CC) $(FLAGS) -o $@ $^
+	@$(CC) $(FLAGS) -o $@ $^
 	@echo "$(GREEN)$@:$(RESET)\tOK"
 
 $(LIB):
@@ -35,21 +36,20 @@ $(LIB):
 	@echo "$(GREEN)libft : compilation OK$(RESET)"	
 
 $(PATH_OBJS)/%.o: $(PATH_SRCS)/%.c $(INCS)
-	test -d $(PATH_OBJS) || mkdir $(PATH_OBJS)
-	$(CC) $(FLAGS) -c $< -o $@ $(addprefix -I , $(INCS))
+	@test -d $(PATH_OBJS) || mkdir $(PATH_OBJS)
+	@$(CC) $(FLAGS) -c $< -o $@ $(addprefix -I , $(INCS))
 	@echo "$(YELLOW)compil:$(RESET)\t$@"	
 
 clean:
 	@rm -rf $(OBJS)
 	@rm -rf $(PATH_OBJS)
 	@echo "$(BLUE)clean:$(RESET)\t$(OBJS)"
-	@make -C $(PATH_LIB) clean
+	@# @make -C $(PATH_LIB) clean
 
 fclean: clean
 	@rm -rf $(NAME)
 	@echo "$(BLUE)clean:$(RESET)\t$(NAME)"
-	@make -C $(PATH_LIB) fclean
-	@echo "$(BLUE)clean:$(RESET)\t$(LIB)"
+	@# @make -C $(PATH_LIB) fclean
 
 re: fclean all
 
