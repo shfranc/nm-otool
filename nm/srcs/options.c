@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 17:13:07 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/18 18:39:26 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/19 10:36:53 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int				ft_get_options(int *argc, char ***argv)
 	char	**av;
 
 	ret = 0;
-
 	av = *argv;
 	ac = *argc;
 	while (--ac)
@@ -54,7 +53,6 @@ int				ft_get_options(int *argc, char ***argv)
 		else if ((ret = ft_save_options(*av)) == -1)
 			return (ret);
 	}
-	
 	*argv = av;
 	*argc = ac;
 	return (ret);
