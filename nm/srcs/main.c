@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:39:40 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/18 18:26:42 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/19 11:43:35 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,46 @@
 
 int 	g_flags = 0;
 
-int		main(int ac, char **av)
+static void		ft_put_error(enum e_error error, char *filename)
 {
+	ft_putstr(NM_ERROR);
+	ft_putstr(filename);
+	if (error == NO_EXIST)
+		ft_putendl_fd(ERR_OPEN, STDERR_FILENO);
+	if (error == PERM_DENIED)
+		ft_putendl_fd(ERR_PERM, STDERR_FILENO);		
+}
+
+int				main(int ac, char **av)
+{
+	int 	ret;
+	int		final_ret;
+
+	final_ret = EXIT_SUCCESS;
 	if (ac == 1)
-		ft_nm(DEFAULT);
+	{
+		if ((ret = ft_nm(DEFAULT)) < 0)
+		{
+			ft_put_error(ret, DEFAULT);
+			return(EXIT_FAILURE);
+		}
+	}
 	else
 	{
-		if ((ft_get_options(&ac, &av)) == -1)
+		if ((ft_get_options(&ac, &av)) < 0)
 		{
 			ft_putendl_fd(ILLEGAL_OPTION, STDERR_FILENO);
 			return (EXIT_FAILURE);
 		}
 		while (ac--)
-			ft_nm(*(av++));
+		{
+			if ((ret = ft_nm(*av)) < 0)
+			{
+				ft_put_error(ret, *av);
+				final_ret = EXIT_FAILURE;
+			}
+			av++;
+		}
 	}
-	return (EXIT_SUCCESS);
+	return (final_ret);
 }
