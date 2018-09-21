@@ -28,7 +28,7 @@ $(NAME): $(PATH_LIB)/$(LIB) $(OBJS)
 	@$(CC) $(FLAGS) -o $@ $^
 	@echo "$(GREEN)$@:$(RESET)\tOK"
 
-$(LIB):
+$(PATH_LIB)/$(LIB):
 	@if [ ! -d $(PATH_LIB) ] ; then \
 		git clone https://github.com/shfranc/libft $(PATH_LIB); \
 	fi
