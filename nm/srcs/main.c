@@ -21,7 +21,9 @@ static void		ft_put_error(enum e_error error, char *filename)
 	if (error == NO_EXIST)
 		ft_putendl_fd(ERR_OPEN, STDERR_FILENO);
 	if (error == PERM_DENIED)
-		ft_putendl_fd(ERR_PERM, STDERR_FILENO);		
+		ft_putendl_fd(ERR_PERM, STDERR_FILENO);
+	if (error == NO_MMAP)
+		ft_putendl_fd(ERR_MMAP, STDERR_FILENO);			
 }
 
 int				main(int ac, char **av)
@@ -32,7 +34,7 @@ int				main(int ac, char **av)
 	final_ret = EXIT_SUCCESS;
 	if (ac == 1)
 	{
-		if ((ret = ft_nm(DEFAULT)) < 0)
+		if ((ret = ft_init_nm(DEFAULT)) < 0)
 		{
 			ft_put_error(ret, DEFAULT);
 			return(EXIT_FAILURE);
@@ -47,7 +49,7 @@ int				main(int ac, char **av)
 		}
 		while (ac--)
 		{
-			if ((ret = ft_nm(*av)) < 0)
+			if ((ret = ft_init_nm(*av)) < 0)
 			{
 				ft_put_error(ret, *av);
 				final_ret = EXIT_FAILURE;
