@@ -9,6 +9,7 @@ PATH_OBJS = objs
 
 SRCS = $(addprefix $(PATH_SRCS)/, main.c \
 	options.c \
+	convert.c \
 	ft_nm.c \
 	fat.c ) 
 OBJS = $(SRCS:$(PATH_SRCS)/%.c=$(PATH_OBJS)/%.o)

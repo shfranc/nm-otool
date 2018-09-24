@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:57 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/24 14:51:13 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/24 16:05:28 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int			ft_nm(void *ptr)
 	{
 		puts("FAT");
 		ft_handle_fat(ptr);
-	}
+	}	
 	else if (magic_number == MH_MAGIC)
 	{
 		puts("MAGIC 32");
