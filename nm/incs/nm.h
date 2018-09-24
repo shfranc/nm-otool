@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:44:27 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/24 16:05:41 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/24 16:48:55 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 # define ERR_OPEN		": No such file or directory."
 # define ERR_PERM		": Permission denied."
 # define ERR_MMAP		": mmap error."
+# define ERR_OBJ		": The file was not recognized as a valid object file"
+# define ARCHIVE		"!<arch>"
+# define LEN_ARCH		7
 
 # include "libft.h"
 # include <errno.h>
@@ -36,7 +39,8 @@ extern int	g_flags;
 enum 		e_error {
 	NO_EXIST = -10,
 	PERM_DENIED,
-	NO_MMAP
+	NO_MMAP,
+	INVALID_OBJ
 };
 
 int		ft_init_nm(char *filename);

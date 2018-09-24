@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:39:40 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/19 11:43:35 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/24 16:49:30 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ static void		ft_put_error(enum e_error error, char *filename)
 	if (error == PERM_DENIED)
 		ft_putendl_fd(ERR_PERM, STDERR_FILENO);
 	if (error == NO_MMAP)
-		ft_putendl_fd(ERR_MMAP, STDERR_FILENO);			
+		ft_putendl_fd(ERR_MMAP, STDERR_FILENO);
+	if (error == INVALID_OBJ)
+		ft_putendl_fd(ERR_OBJ, STDERR_FILENO);				
 }
 
 int				main(int ac, char **av)

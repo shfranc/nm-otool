@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:57 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/24 16:05:28 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/24 16:50:48 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,15 @@ int			ft_nm(void *ptr)
 		puts("CIGAM 64");
 		// ft_handle_cigam_64(ptr);
 	}
+	else if (ft_strncmp(ptr, ARCHIVE, LEN_ARCH) == 0)
+	{
+		puts("ARCHIVE");
+	}
 	else
 	{
 		puts("something else...");
 	}
-	return (0);
+	return (INVALID_OBJ);
 }
 
 int			ft_init_nm(char *filename)
