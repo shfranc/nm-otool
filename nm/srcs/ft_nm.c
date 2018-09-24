@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:57 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/24 16:50:48 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/24 16:55:37 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,15 @@ int			ft_nm(void *ptr)
 	}
 	else if (ft_strncmp(ptr, ARCHIVE, LEN_ARCH) == 0)
 	{
-		puts("ARCHIVE");
+		puts(ARCHIVE);
+		ft_handle_archive(ptr);
 	}
 	else
 	{
 		puts("something else...");
+		return (INVALID_OBJ);
 	}
-	return (INVALID_OBJ);
+	return (0);
 }
 
 int			ft_init_nm(char *filename)
