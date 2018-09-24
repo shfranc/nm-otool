@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:44:27 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/19 11:45:02 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/24 14:51:56 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/stat.h>
 # include <sys/mman.h>
 # include <mach-o/loader.h>
+# include <mach-o/fat.h>
 
 
 extern int	g_flags;
@@ -39,7 +40,8 @@ enum 		e_error {
 };
 
 int		ft_init_nm(char *filename);
-int		ft_nm(char *ptr);
+int		ft_nm(void *ptr);
+int		ft_handle_fat(void *ptr);
 
 /*
 ** PARSING
