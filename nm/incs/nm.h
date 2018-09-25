@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:44:27 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/25 12:59:22 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/25 17:02:44 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include <sys/mman.h>
 # include <mach-o/loader.h>
 # include <mach-o/fat.h>
+# include <mach-o/ranlib.h>
 # include <ar.h>
 
 extern int	g_flags;
