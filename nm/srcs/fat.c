@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:45:45 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/24 16:06:17 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/25 10:45:45 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int		ft_handle_fat(void *ptr)
 	while (nb_arch--)
 	{
 		printf("cputype: %d\n", ft_swap_int(arch->cputype));
-		printf("cputype: %d\n", ft_swap_int(arch->cpusubtype));
+		printf("cpusubtype: %d\n", ft_swap_int(arch->cpusubtype));
 		ft_nm(ptr + ft_swap_int(arch->offset));
-		arch = (void*)arch + sizeof(struct fat_arch);
+		arch++;
 	}
 	return (0);
 }
