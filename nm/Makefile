@@ -11,6 +11,7 @@ SRCS = $(addprefix $(PATH_SRCS)/, main.c \
 	options.c \
 	convert.c \
 	ft_nm.c \
+	magic_64.c \
 	fat.c \
 	archive.c ) 
 OBJS = $(SRCS:$(PATH_SRCS)/%.c=$(PATH_OBJS)/%.o)

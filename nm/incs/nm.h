@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:44:27 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/25 17:02:44 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/26 20:34:44 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@
 # include <mach-o/ranlib.h>
 # include <ar.h>
 
+typedef struct	s_ofile {
+	char			*filename;
+	unsigned int	size;
+	void			*data;
+}				t_ofile;
+
 extern int	g_flags;
 
 enum 		e_error {
@@ -43,9 +49,10 @@ enum 		e_error {
 };
 
 int		ft_init_nm(char *filename);
-int		ft_nm(void *ptr);
-int		ft_handle_fat(void *ptr);
-int		ft_handle_archive(void *ptr);
+int		ft_nm(char *filename, unsigned int size, void *data);
+int		ft_process_fat(char *filename, unsigned int size, void *data);
+int		ft_process_archive(char *filename, unsigned int size, void *data);
+int		ft_handle_magic_64(t_ofile *file);
 
 /*
 ** PARSING
