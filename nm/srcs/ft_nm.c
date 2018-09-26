@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:57 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/19 11:51:45 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/25 12:59:13 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,47 @@ static int		ft_open_file(char *filename, struct stat *s)
 	return (fd);
 }
 
-int			ft_nm(char *ptr)
+int			ft_nm(void *ptr)
 {
 	unsigned int	magic_number;
 
 	magic_number = *(int *)ptr;
 	printf("magic number: %x\n", magic_number);
-	if (magic_number == MH_MAGIC_64)
+	
+	if (magic_number == FAT_CIGAM || magic_number == FAT_MAGIC)
 	{
-		puts("Binaire pour 64 bits");
-		// ft_handle_64(ptr);
+		puts("FAT");
+		ft_handle_fat(ptr);
+	}	
+	else if (magic_number == MH_MAGIC)
+	{
+		puts("MAGIC 32");
+		// ft_handle_magic_32(ptr);
+	}
+	else if (magic_number == MH_MAGIC_64)
+	{
+		puts("MAGIC 64");
+		// ft_handle_magic_64(ptr);
+	}
+	else if (magic_number == MH_CIGAM)
+	{
+		puts("CIGAM 32");
+		// ft_handle_cigam_32(ptr);
+	}
+	else if (magic_number == MH_CIGAM_64)
+	{
+		puts("CIGAM 64");
+		// ft_handle_cigam_64(ptr);
+	}
+	else if (ft_strncmp(ptr, ARMAG, SARMAG) == 0)
+	{
+		puts(ARMAG);
+		ft_handle_archive(ptr);
+	}
+	else
+	{
+		puts("something else...");
+		return (INVALID_OBJ);
 	}
 	return (0);
 }

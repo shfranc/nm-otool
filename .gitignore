@@ -11,3 +11,5 @@ libft
 
 # SWP
 *.swp
+.DS_Store
+.vscode

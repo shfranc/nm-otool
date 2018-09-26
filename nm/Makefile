@@ -8,8 +8,11 @@ PATH_SRCS = srcs
 PATH_OBJS = objs
 
 SRCS = $(addprefix $(PATH_SRCS)/, main.c \
+	options.c \
+	convert.c \
 	ft_nm.c \
-	options.c )
+	fat.c \
+	archive.c ) 
 OBJS = $(SRCS:$(PATH_SRCS)/%.c=$(PATH_OBJS)/%.o)
 INCS = incs $(PATH_LIB)/includes
 
