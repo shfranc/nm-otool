@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:44:27 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/26 20:34:44 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/26 20:46:58 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # define ERR_PERM		": Permission denied."
 # define ERR_MMAP		": mmap error."
 # define ERR_OBJ		": The file was not recognized as a valid object file"
+
+
+#include <stdio.h>
 
 # include "libft.h"
 # include <errno.h>

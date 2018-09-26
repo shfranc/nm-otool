@@ -6,12 +6,11 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:45:45 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/26 20:35:22 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/26 20:47:08 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
-#include <stdio.h>
 
 int		ft_process_fat(char *filename, unsigned int size, void *ptr)
 {

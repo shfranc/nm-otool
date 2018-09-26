@@ -6,12 +6,11 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:57 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/26 20:35:06 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/26 20:47:14 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
-#include <stdio.h>
 
 static int		ft_open_file(char *filename, struct stat *s)
 {
