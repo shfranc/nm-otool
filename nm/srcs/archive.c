@@ -6,12 +6,11 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 16:52:12 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/26 10:49:04 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/26 11:38:09 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
-#include <stdio.h>
 
 static int     ft_padding_ar_mac(char *ar_name)
 {

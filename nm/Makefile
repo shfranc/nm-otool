@@ -12,7 +12,8 @@ SRCS = $(addprefix $(PATH_SRCS)/, main.c \
 	convert.c \
 	ft_nm.c \
 	fat.c \
-	archive.c ) 
+	archive.c \
+	magic_64.c ) 
 OBJS = $(SRCS:$(PATH_SRCS)/%.c=$(PATH_OBJS)/%.o)
 INCS = incs $(PATH_LIB)/includes
 

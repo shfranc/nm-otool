@@ -6,12 +6,11 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:57 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/25 12:59:13 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/09/26 11:38:17 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
-#include <stdio.h>
 
 static int		ft_open_file(char *filename, struct stat *s)
 {
@@ -45,7 +44,7 @@ int			ft_nm(void *ptr)
 	else if (magic_number == MH_MAGIC_64)
 	{
 		puts("MAGIC 64");
-		// ft_handle_magic_64(ptr);
+		ft_handle_magic_64(ptr);
 	}
 	else if (magic_number == MH_CIGAM)
 	{
