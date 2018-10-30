@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:44:27 by sfranc            #+#    #+#             */
-/*   Updated: 2018/10/30 10:37:49 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/10/30 15:10:30 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define ERR_PERM		": Permission denied."
 # define ERR_MMAP		": mmap error."
 # define ERR_OBJ		": The file was not recognized as a valid object file"
+# define ERR_MALLOC		": Unable to malloc."
 
 
 # include <stdio.h>
@@ -43,8 +44,23 @@ enum 		e_error {
 	NO_EXIST = -10,
 	PERM_DENIED,
 	NO_MMAP,
-	INVALID_OBJ
+	INVALID_OBJ,
+	MALLOC_FAILED
 };
+
+typedef	struct	s_symbole64 {
+	struct nlist_64			*symbole;
+	struct s_symbole		*next;
+	struct s_symbole		*prev;
+}				t_symbole64;
+
+typedef struct	s_file64 {
+	void					*ptr;
+	struct mach_header_64   *header;
+	struct load_command		*load_cmds;
+    struct symtab_command	*symtab_cmd;
+	t_symbole64				*symboles;
+}				t_file64;
 
 int		ft_init_nm(char *filename);
 int		ft_nm(void *ptr);

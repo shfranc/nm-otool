@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/26 11:08:40 by sfranc            #+#    #+#             */
-/*   Updated: 2018/10/30 10:36:07 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/10/30 15:54:41 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,32 +33,107 @@ void	print_output(int nsyms, int symoff, int stroff, void *ptr)
 	}
 }
 
-int		ft_handle_magic_64(void *ptr)
+t_symbole64			*ft_create_symbole(struct nlist_64 *symbole)
 {
-    struct mach_header_64   *header;
+	t_symbole64		*elem;
+
+	if (!(elem = (t_symbole64*)malloc(sizeof(t_symbole64))))
+		ft_exit(ERR_MALLOC, MALLOC_FAILED);
+	elem->symbole = symbole;
+	elem->next = NULL;
+	elem->prev = NULL;
+	return (elem);
+}
+
+void		ft_create_symboles_list(t_file64 *file)
+{
+	int				i;
+	int				nb_syms;
+	char			*stringtable;
+	struct nlist_64	*symbole;	
+	t_symbole64		*head;
+	t_symbole64		*tmp;
+
+	nb_syms = file->symtab_cmd->nsyms;
+	stringtable = file->ptr + file->symtab_cmd->stroff;
+	symbole = file->ptr + file->symtab_cmd->symoff;
+	head = ft_create_symbole(symbole);
+	tmp = head;
+	i = 1;
+	while (i++ < nb_syms)
+	{
+		ft_putendl(stringtable + symbole[i].n_un.n_strx);
+	}
+
+}
+
+void		ft_get_symtab_command(t_file64 *file)
+{
     unsigned int            ncmds;
 	struct load_command		*lc;
-    struct symtab_command	*sym;
-    unsigned int			i;
+	unsigned int			i;
 
-    header = (struct mach_header_64*)ptr;
-    ncmds = header->ncmds;
-    printf("nb cmd: %d\n", ncmds);
-
-    lc = (struct load_command*)(header + 1);
-    
+    ncmds = file->header->ncmds;
+	lc = file->load_cmds;
     i = 0;
 	while (i++ < ncmds)
 	{
 		if (lc->cmd == LC_SYMTAB)
 		{
-			puts("Section SYMTAB");
-			sym = (struct symtab_command *)lc;
-			printf("nb symbols: %d\n", sym->nsyms);
-			print_output(sym->nsyms, sym->symoff, sym->stroff, (void *)ptr);
+			file->symtab_cmd = (struct symtab_command *)lc;
 			break ;
 		}
 		lc = (void *)lc + lc->cmdsize;
 	}
-    return (0);
 }
+
+void		ft_init_struct_file(t_file64 **file, void *ptr)
+{
+	if (!(*file = (t_file64*)malloc(sizeof(t_file64))))
+		ft_exit(ERR_MALLOC, MALLOC_FAILED);
+	ft_bzero(*file, sizeof(t_file64));
+	(*file)->ptr = ptr;
+	(*file)->header = (struct mach_header_64*)ptr;
+	(*file)->load_cmds = (struct load_command*)((*file)->header + 1);
+	ft_get_symtab_command(*file);
+}
+
+int		ft_handle_magic_64(void *ptr)
+{
+	t_file64	*file;
+
+	ft_init_struct_file(&file, ptr);
+	ft_create_symboles_list(file);
+
+    return (EXIT_SUCCESS);
+}
+
+// int		ft_handle_magic_64(void *ptr)
+// {
+//     struct mach_header_64   *header;
+//     unsigned int            ncmds;
+// 	struct load_command		*lc;
+//     struct symtab_command	*sym;
+//     unsigned int			i;
+
+//     header = (struct mach_header_64*)ptr;
+//     ncmds = header->ncmds;
+//     printf("nb cmd: %d\n", ncmds);
+
+//     lc = (struct load_command*)(header + 1);
+    
+//     i = 0;
+// 	while (i++ < ncmds)
+// 	{
+// 		if (lc->cmd == LC_SYMTAB)
+// 		{
+// 			puts("Section SYMTAB");
+// 			sym = (struct symtab_command *)lc;
+// 			printf("nb symbols: %d\n", sym->nsyms);
+// 			print_output(sym->nsyms, sym->symoff, sym->stroff, (void *)ptr);
+// 			break ;
+// 		}
+// 		lc = (void *)lc + lc->cmdsize;
+// 	}
+//     return (0);
+// }
