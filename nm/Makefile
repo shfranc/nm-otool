@@ -8,6 +8,7 @@ PATH_SRCS = srcs
 PATH_OBJS = objs
 
 SRCS = $(addprefix $(PATH_SRCS)/, main.c \
+	ft_puthexa.c \
 	options.c \
 	convert.c \
 	ft_nm.c \

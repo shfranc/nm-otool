@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:44:27 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/26 11:45:11 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/10/30 10:37:49 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ int		ft_get_options(int *argc, char ***argv);
 ** TOOLS
 */
 unsigned int		ft_swap_int(unsigned int n);
+void				ft_puthexa_16(unsigned long long nbr);
 
 #endif
