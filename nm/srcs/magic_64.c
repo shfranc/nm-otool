@@ -5,19 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-<<<<<<< HEAD
 /*   Created: 2018/09/26 11:08:40 by sfranc            #+#    #+#             */
-/*   Updated: 2018/10/30 15:54:41 by sfranc           ###   ########.fr       */
-=======
-/*   Created: 2018/09/26 20:15:51 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/26 21:01:15 by sfranc           ###   ########.fr       */
->>>>>>> 6988f7e80844b596b149661d40dfcc68adb6ef90
+/*   Updated: 2018/11/01 14:44:50 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
-<<<<<<< HEAD
 void	print_output(int nsyms, int symoff, int stroff, void *ptr)
 {
 	int				i;
@@ -143,32 +137,3 @@ int		ft_handle_magic_64(void *ptr)
 // 	}
 //     return (0);
 // }
-=======
-int     ft_handle_magic_64(t_ofile *file)
-{
-	unsigned int			nb_lcmds;
-	unsigned int			i;
-	struct mach_header_64	*header;
-	struct load_command		*lc;
-	struct symtab_command	*sym;
-
-
-	header = (struct mach_header_64 *)(file->data);
-	nb_lcmds = header->ncmds;
-
-	lc = (void *)(file->data) + sizeof(*header);
-    printf("** NB LOAD COMMAND: %d\n", nb_lcmds);
-    i = 0;
-    while (i++ < nb_lcmds)
-    {
-        ft_putnbr_endl(lc->cmd);
-        if (lc->cmd == LC_SYMTAB)
-        {
-			sym = (struct symtab_command *)lc;
-        }
-        lc = (void *)lc + lc->cmdsize;
-    }
-    (void)file;
-    return (0);
-}
->>>>>>> 6988f7e80844b596b149661d40dfcc68adb6ef90
