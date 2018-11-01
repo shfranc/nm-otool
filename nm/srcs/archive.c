@@ -6,7 +6,11 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 16:52:12 by sfranc            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2018/09/26 11:38:09 by sfranc           ###   ########.fr       */
+=======
+/*   Updated: 2018/09/26 20:47:03 by sfranc           ###   ########.fr       */
+>>>>>>> 6988f7e80844b596b149661d40dfcc68adb6ef90
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +31,16 @@ static int     ft_padding_ar_mac(char *ar_name)
 }
 
 
-int     ft_handle_archive(void *ptr)
+int     ft_process_archive(char *filename, unsigned int size, void *ptr)
 {
     struct ar_hdr       *header;
     char                *long_name;
     unsigned int        symtab_size;
     unsigned int        nb_items;    
     struct ranlib       *obj;
+
+    (void)filename;
+    (void)size;
 
     header = (struct ar_hdr*)(ptr + SARMAG);
     printf("sizeof ar_hdr: %lu\n", sizeof(struct ar_hdr));

@@ -6,7 +6,11 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:44:27 by sfranc            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2018/10/30 15:10:30 by sfranc           ###   ########.fr       */
+=======
+/*   Updated: 2018/09/26 20:46:58 by sfranc           ###   ########.fr       */
+>>>>>>> 6988f7e80844b596b149661d40dfcc68adb6ef90
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +31,9 @@
 
 # include <stdio.h>
 
+
+#include <stdio.h>
+
 # include "libft.h"
 # include <errno.h>
 # include <fcntl.h>
@@ -37,6 +44,12 @@
 # include <mach-o/fat.h>
 # include <mach-o/ranlib.h>
 # include <ar.h>
+
+typedef struct	s_ofile {
+	char			*filename;
+	unsigned int	size;
+	void			*data;
+}				t_ofile;
 
 extern int	g_flags;
 
@@ -63,10 +76,17 @@ typedef struct	s_file64 {
 }				t_file64;
 
 int		ft_init_nm(char *filename);
+<<<<<<< HEAD
 int		ft_nm(void *ptr);
 int		ft_handle_fat(void *ptr);
 int		ft_handle_archive(void *ptr);
 int		ft_handle_magic_64(void *ptr);
+=======
+int		ft_nm(char *filename, unsigned int size, void *data);
+int		ft_process_fat(char *filename, unsigned int size, void *data);
+int		ft_process_archive(char *filename, unsigned int size, void *data);
+int		ft_handle_magic_64(t_ofile *file);
+>>>>>>> 6988f7e80844b596b149661d40dfcc68adb6ef90
 
 /*
 ** PARSING
