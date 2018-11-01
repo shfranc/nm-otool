@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:44:27 by sfranc            #+#    #+#             */
-/*   Updated: 2018/11/01 14:46:03 by sfranc           ###   ########.fr       */
+/*   Updated: 2018/11/01 14:47:27 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,10 @@ typedef struct	s_file64 {
 }				t_file64;
 
 int		ft_init_nm(char *filename);
-<<<<<<< HEAD
 int		ft_nm(void *ptr);
 int		ft_handle_fat(void *ptr);
 int		ft_handle_archive(void *ptr);
 int		ft_handle_magic_64(void *ptr);
-=======
-int		ft_nm(char *filename, unsigned int size, void *data);
-int		ft_process_fat(char *filename, unsigned int size, void *data);
-int		ft_process_archive(char *filename, unsigned int size, void *data);
-int		ft_handle_magic_64(t_ofile *file);
->>>>>>> 6988f7e80844b596b149661d40dfcc68adb6ef90
 
 /*
 ** PARSING
