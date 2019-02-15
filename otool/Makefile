@@ -4,8 +4,8 @@ CC = gcc
 
 PATH_SRCS = srcs
 PATH_OBJS = objs
-PATH_INC = includes
-SRCS = $(addprefix $(PATH_SRCS)/, test.c)
+PATH_INC = incs
+SRCS = $(addprefix $(PATH_SRCS)/, main.c)
 OBJS = $(SRCS:$(PATH_SRCS)/%.c=$(PATH_OBJS)/%.o)
 INCS = $(addprefix $(PATH_INC)/, )
 

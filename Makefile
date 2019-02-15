@@ -3,7 +3,9 @@ NAME=nm-otool
 all: $(NAME)
 
 $(NAME):
+	@echo "============ NM ============="
 	@make -C nm
+	@echo "============ OTOOL =========="
 	@make -C otool
 
 clean:
