@@ -13,3 +13,6 @@ libft
 *.swp
 .DS_Store
 .vscode
+
+# CACHE
+__pycache__
