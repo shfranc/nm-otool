@@ -13,7 +13,7 @@ void	print_output(int nsyms, int symoff, int stroff, void *ptr)
 	while (i++ < nsyms)
 	{
 		if (elem[i].n_value)
-			ft_puthexa_16(elem[i].n_value);
+			ft_puthexa(elem[i].n_value);
 		else
 			ft_putstr("                ");
 		ft_putstr(" x ");

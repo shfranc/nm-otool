@@ -3,12 +3,11 @@ FLAGS = -Wall -Wextra -Werror
 CC = gcc
 
 LIB = libft.a
-PATH_LIB = libft
+PATH_LIB = ../libft
 PATH_SRCS = srcs
 PATH_OBJS = objs
 
 SRCS = $(addprefix $(PATH_SRCS)/, main.c \
-	ft_puthexa.c \
 	options.c \
 	ft_nm.c \
 	magic_64.c \
@@ -31,33 +30,26 @@ all: $(NAME)
 
 $(NAME): $(PATH_LIB)/$(LIB) $(OBJS)
 	@$(CC) $(FLAGS) -o $@ $^
-	@echo "$(GREEN)$@:$(RESET)\tOK"
+	@echo "$(GREEN)$@:$(RESET) OK"
 
 $(PATH_LIB)/$(LIB):
-	@if [ ! -d $(PATH_LIB) ] ; then \
-		git clone https://github.com/shfranc/libft $(PATH_LIB); \
-	fi
 	@make -C $(PATH_LIB)
-	@echo "$(GREEN)libft : compilation OK$(RESET)"	
 
 $(PATH_OBJS)/%.o: $(PATH_SRCS)/%.c $(INCS)
 	@test -d $(PATH_OBJS) || mkdir $(PATH_OBJS)
 	@$(CC) $(FLAGS) -c $< -o $@ $(addprefix -I , $(INCS))
-	@echo "$(YELLOW)compil:$(RESET)\t$@"	
+	@echo "$(YELLOW)compil:$(RESET) $@"	
 
 clean:
 	@rm -rf $(OBJS)
 	@rm -rf $(PATH_OBJS)
-	@echo "$(BLUE)clean:$(RESET)\t$(OBJS)"
-	@# @make -C $(PATH_LIB) clean
+	@echo "$(BLUE)clean:$(RESET) $(PATH_OBJS)"
 
 fclean: clean
 	@rm -rf $(NAME)
-	@echo "$(BLUE)clean:$(RESET)\t$(NAME)"
-	@# @make -C $(PATH_LIB) fclean
+	@echo "$(BLUE)clean:$(RESET) $(NAME)"
+	@make -C $(PATH_LIB) fclean
 
 re: fclean all
 
 .PHONY: clean fclean re
-
-	# gcc state.c -o state -I includes -L . -lft_malloc
