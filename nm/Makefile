@@ -40,11 +40,11 @@ $(PATH_OBJS)/%.o: $(PATH_SRCS)/%.c $(INCS)
 	@$(CC) $(FLAGS) -c $< -o $@ $(addprefix -I , $(INCS))
 	@echo "$(YELLOW)compil:$(RESET) $@"
 
-clean_tests :
+clean_tests:
 	@echo "cleaning old tests files..."
 	@rm -f tests/input/*.output
 
-run_tests : clean_tests
+run_tests: clean_tests
 	@printf "\033[1;33m--------------------\n%s\n--------------------\033[0m\n" "$(NAME)"
 	@python3 tests/main.py
 
@@ -60,8 +60,8 @@ fclean: clean
 fclean_lib :
 	@make fclean -C $(PATH_LIB)
 
-fclean_all : fclean_lib fclean
+fclean_all: fclean_lib fclean
 
-re_with_lib : fclean_all all	
+re_with_lib: fclean_all all	
 
 re: fclean all
