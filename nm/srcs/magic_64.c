@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   magic_64.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/26 11:08:40 by sfranc            #+#    #+#             */
-/*   Updated: 2018/11/01 14:44:50 by sfranc           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "nm.h"
 
 void	print_output(int nsyms, int symoff, int stroff, void *ptr)
@@ -38,7 +26,7 @@ t_symbole64			*ft_create_symbole(struct nlist_64 *symbole)
 	t_symbole64		*elem;
 
 	if (!(elem = (t_symbole64*)malloc(sizeof(t_symbole64))))
-		ft_exit(ERR_MALLOC, MALLOC_FAILED);
+		ft_exit(ERR_MALLOC, MALLOC_FAILED); // No!!
 	elem->symbole = symbole;
 	elem->next = NULL;
 	elem->prev = NULL;
@@ -90,7 +78,7 @@ void		ft_get_symtab_command(t_file64 *file)
 void		ft_init_struct_file(t_file64 **file, void *ptr)
 {
 	if (!(*file = (t_file64*)malloc(sizeof(t_file64))))
-		ft_exit(ERR_MALLOC, MALLOC_FAILED);
+		ft_exit(ERR_MALLOC, MALLOC_FAILED); // NO!!
 	ft_bzero(*file, sizeof(t_file64));
 	(*file)->ptr = ptr;
 	(*file)->header = (struct mach_header_64*)ptr;
