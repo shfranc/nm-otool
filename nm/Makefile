@@ -56,8 +56,12 @@ clean:
 fclean: clean
 	@rm -rf $(NAME)
 	@echo "$(BLUE)clean:$(RESET) $(NAME)"
-	@make -C $(PATH_LIB) fclean
+
+fclean_lib :
+	@make fclean -C $(PATH_LIB)
+
+fclean_all : fclean_lib fclean
+
+re_with_lib : fclean_all all	
 
 re: fclean all
-
-.PHONY: clean fclean re
