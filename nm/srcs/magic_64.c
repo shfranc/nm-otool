@@ -1,25 +1,25 @@
 #include "nm.h"
 
-void	print_output(int nsyms, int symoff, int stroff, void *ptr)
-{
-	int				i;
-	char			*stringtable;
-	struct nlist_64	*elem;
+// void	print_output(int nsyms, int symoff, int stroff, void *ptr)
+// {
+// 	int				i;
+// 	char			*stringtable;
+// 	struct nlist_64	*elem;
 
-	elem = ptr + symoff;
-	stringtable = ptr + stroff;
+// 	elem = ptr + symoff;
+// 	stringtable = ptr + stroff;
 
-	i = 0;
-	while (i++ < nsyms)
-	{
-		if (elem[i].n_value)
-			ft_puthexa(elem[i].n_value);
-		else
-			ft_putstr("                ");
-		ft_putstr(" x ");
-		ft_putendl(stringtable + elem[i].n_un.n_strx);		
-	}
-}
+// 	i = 0;
+// 	while (i++ < nsyms)
+// 	{
+// 		if (elem[i].n_value)
+// 			ft_puthexa(elem[i].n_value);
+// 		else
+// 			ft_putstr("                ");
+// 		ft_putstr(" x ");
+// 		ft_putendl(stringtable + elem[i].n_un.n_strx);		
+// 	}
+// }
 
 t_symbole64			*ft_create_symbole(struct nlist_64 *symbole)
 {
@@ -50,7 +50,7 @@ void		ft_create_symboles_list(t_file64 *file)
 	i = 1;
 	while (i++ < nb_syms)
 	{
-		ft_putendl(stringtable + symbole[i].n_un.n_strx);
+		ft_putendl(stringtable + symbole[i].n_un.n_strx); // segfault sur "64_exe_easy"
 	}
 
 }

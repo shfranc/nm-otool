@@ -10,14 +10,14 @@ from subprocess_manager import SubprocessManager
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 input_path = dirpath + '/input/'
-asm_bin = dirpath + '/../ft_nm'
-# asm_bin = '/usr/bin/nm'
+ft_nm = dirpath + '/../ft_nm'
+# ft_nm = '/usr/bin/nm'
 
 def test_processing(file):
     try:
         # shell=True : interpret command in shell
         # stderr=subprocess.STDOUT : stderr in stdout
-        command = asm_bin + ' ' + input_path + file + " > " + input_path + file + ".output"
+        command = ft_nm + ' ' + input_path + file + " > " + input_path + file + ".output"
         output = subprocess.check_output([command], shell=True, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as exc:
         spm = SubprocessManager(file, exc.returncode, exc.output)
@@ -52,8 +52,8 @@ def main():
     # Remove all .cor in input/
     clean_input_folder()
     # Check if file 'asm' exists
-    asm_file = Path(asm_bin)
-    if asm_file.is_file():
+    ft_nm_bin = Path(ft_nm)
+    if ft_nm_bin.is_file():
         return tests_loop()
     else:
         d.stderr_print("Error : binary 'ft_nm' does not exist.")

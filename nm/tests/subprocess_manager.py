@@ -107,7 +107,7 @@ class SubprocessManager:
     # If code < 0 -> signal (python convention)
     # If code = 1 or 255, it means the program returned 1 or -1 (typically when there is an error)
     def get_rslt_when_exception(self):
-        if self.code == -signal.SIGSEGV:
+        if self.code == -signal.SIGSEGV or self.code == 139:
             d.print_failure('SEGFAULT')
             return 1
         elif self.code == -signal.SIGABRT:

@@ -16,3 +16,6 @@ libft
 
 # CACHE
 __pycache__
+
+# TESTS
+*/*/input/*.output
