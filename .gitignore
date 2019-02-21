@@ -12,10 +12,12 @@ libft
 # SWP
 *.swp
 .DS_Store
-.vscode
 
 # CACHE
 __pycache__
 
 # TESTS
 */*/input/*.output
+
+# VSCODE
+.vscode

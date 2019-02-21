@@ -1,26 +1,32 @@
-NAME=nm-otool
+NAME = nm-otool
 
-PATH_NM=nm/
-NM=$(PATH_NM)ft_nm
+PATH_NM = nm/
+NM = $(PATH_NM)ft_nm
 
-PATH_OTOOL=otool/
-OTOOL=$(PATH_OTOOL)ft_otool
+PATH_OTOOL = otool/
+OTOOL = $(PATH_OTOOL)ft_otool
 
-
+GIT_LIB = https://github.com/shfranc/libft
 PATH_LIB = libft/
 LIBFT = $(PATH_LIB)/libft.a
+
+YELLOW = \033[1;33m
+RESET = \033[0m
 
 all: $(LIBFT) $(NM) $(OTOOL)
 
 $(LIBFT):
+	@if [ ! -d $(PATH_LIB) ] ; then \
+		git clone $(GIT_LIB) $(PATH_LIB); \
+	fi
 	@make -C $(PATH_LIB)
 
 $(NM):
-	@printf "\033[1;33m%s\033[0m\n" "============ NM ============="
+	@printf "$(YELLOW)%s$(RESET)\n" "============ NM ============="
 	@make -C $(PATH_NM)
 
 $(OTOOL):
-	@printf "\033[1;33m%s\033[0m\n" "============ OTOOL =========="
+	@printf "$(YELLOW)%s$(RESET)\n" "============ OTOOL =========="
 	@make -C $(PATH_OTOOL)
 
 clean_tests:
