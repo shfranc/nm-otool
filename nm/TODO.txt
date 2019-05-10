@@ -1,0 +1,5 @@
+TODO
+====
+
+√ include libft / no git clone
+- check malloc / print error message close to the error, then return error code.

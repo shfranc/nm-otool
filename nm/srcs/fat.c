@@ -1,19 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   fat.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/24 14:45:45 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/25 10:45:45 by sfranc           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "nm.h"
-#include <stdio.h>
 
-int		ft_handle_fat(void *ptr)
+int		ft_process_fat(char *filename, unsigned int size, void *ptr)
 {
 	struct fat_header	*header;
 	unsigned int		nb_arch;
@@ -28,7 +15,7 @@ int		ft_handle_fat(void *ptr)
 	{
 		printf("cputype: %d\n", ft_swap_int(arch->cputype));
 		printf("cpusubtype: %d\n", ft_swap_int(arch->cpusubtype));
-		ft_nm(ptr + ft_swap_int(arch->offset));
+		ft_nm(filename, size, ptr + ft_swap_int(arch->offset));
 		arch++;
 	}
 	return (0);

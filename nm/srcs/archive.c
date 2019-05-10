@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   archive.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/24 16:52:12 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/26 10:49:04 by sfranc           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "nm.h"
-#include <stdio.h>
 
 static int     ft_padding_ar_mac(char *ar_name)
 {
@@ -28,13 +15,16 @@ static int     ft_padding_ar_mac(char *ar_name)
 }
 
 
-int     ft_handle_archive(void *ptr)
+int     ft_process_archive(char *filename, unsigned int size, void *ptr)
 {
     struct ar_hdr       *header;
     char                *long_name;
     unsigned int        symtab_size;
     unsigned int        nb_items;    
     struct ranlib       *obj;
+
+    (void)filename;
+    (void)size;
 
     header = (struct ar_hdr*)(ptr + SARMAG);
     printf("sizeof ar_hdr: %lu\n", sizeof(struct ar_hdr));

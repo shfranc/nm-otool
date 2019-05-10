@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   options.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/18 17:13:07 by sfranc            #+#    #+#             */
-/*   Updated: 2018/09/19 10:36:53 by sfranc           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "nm.h"
 
-static int		ft_save_options(char *str)
+static int		save_options(char *str)
 {
 	static char	*options = OPTIONS;
 	char		*option;
@@ -31,7 +19,7 @@ static int		ft_save_options(char *str)
 	return (0);
 }
 
-int				ft_get_options(int *argc, char ***argv)
+int				get_options(int *argc, char ***argv)
 {
 	int		ret;
 	int		ac;
@@ -50,7 +38,7 @@ int				ft_get_options(int *argc, char ***argv)
 		}
 		if (**av != '-')
 			break ;
-		else if ((ret = ft_save_options(*av)) == -1)
+		else if ((ret = save_options(*av)) == -1)
 			return (ret);
 	}
 	*argv = av;
