@@ -6,7 +6,7 @@
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:57 by sfranc            #+#    #+#             */
-/*   Updated: 2018/11/01 14:54:08 by sfranc           ###   ########.fr       */
+/*   Updated: 2019/05/10 12:40:07 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int			ft_nm(char *filename, unsigned int size, void *ptr)
 {
 	unsigned int	magic_number;
 	// t_ofile			file;
-
 	// ft_init_ofile(&file, filename, size, ptr);
 
 	magic_number = *(int *)ptr;
