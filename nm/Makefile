@@ -1,5 +1,5 @@
 NAME = ft_nm
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror
 CC = gcc
 
 LIB = libft.a
