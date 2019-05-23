@@ -1,51 +1,84 @@
-#include "nm.h"
+#include "ft_nm.h"
 
-int 	g_flags = 0;
-
-static void		ft_put_error(enum e_error error, char *filename)
+static t_ex_ret	ft_nm(size_t size, void *ptr)
 {
-	ft_putstr(NM_ERROR);
-	ft_putstr(filename);
-	if (error == NO_EXIST)
-		ft_putendl_fd(ERR_OPEN, STDERR_FILENO);
-	if (error == PERM_DENIED)
-		ft_putendl_fd(ERR_PERM, STDERR_FILENO);
-	if (error == NO_MMAP)
-		ft_putendl_fd(ERR_MMAP, STDERR_FILENO);
-	if (error == INVALID_OBJ)
-		ft_putendl_fd(ERR_OBJ, STDERR_FILENO);				
+	t_bin_file		file;
+    t_ex_ret        ret;
+
+	ft_bzero(&file, sizeof(file));
+	file.ptr = ptr;
+	file.size = size;
+	file.magic_number = *(int *)ptr;
+    ret = FAILURE;
+	printf("magic number: %x\n", file.magic_number);
+
+    if (file.magic_number == MH_MAGIC)
+    {
+		printf("MAGIC 32 bits\n");
+	}
+    else if (file.magic_number == MH_MAGIC_64)
+	{
+		printf("MAGIC 64 bits\n");
+		ret = handle_magic_64(&file);
+	}
+    else if (file.magic_number == MH_CIGAM)
+    {
+		printf("CIGAM 32 bits\n");
+	}
+    else if (file.magic_number == MH_CIGAM_64)
+    {
+		printf("CIGAM 64 bits\n");
+	}
+    else
+    {
+        dprintf(2, "Wrong magic number\n");
+    }
+
+    return (ret);
 }
 
-int				main(int ac, char **av)
+int		main(int ac, char **av)
 {
-	int 	ret;
-	int		final_ret;
+	int			fd;
+	void		*ptr;
+	struct stat buf;
+    t_ex_ret        ret;
 
-	final_ret = EXIT_SUCCESS;
-	if (ac == 1)
+	ptr = NULL;
+
+	if (ac != 2)
 	{
-		if ((ret = ft_init_nm(DEFAULT)) < 0)
-		{
-			ft_put_error(ret, DEFAULT);
-			return(EXIT_FAILURE);
-		}
+		fprintf(stderr, "usage: nm binary_file [...]\n");
+		return (EXIT_FAILURE);
 	}
-	else
+
+	if ((fd = open(av[1], O_RDONLY)) < 0)
 	{
-		if ((get_options(&ac, &av)) < 0)
-		{
-			ft_putendl_fd(ILLEGAL_OPTION, STDERR_FILENO);
-			return (EXIT_FAILURE);
-		}
-		while (ac--)
-		{
-			if ((ret = ft_init_nm(*av)) < 0)
-			{
-				ft_put_error(ret, *av);
-				final_ret = EXIT_FAILURE;
-			}
-			av++;
-		}
+		fprintf(stderr, "open: error\n");
+		return (EXIT_FAILURE);
 	}
-	return (final_ret);
+
+	if ((fstat(fd, &buf)) < 0)
+	{
+		fprintf(stderr, "fstat: error\n");
+		return (EXIT_FAILURE);
+	}
+
+	if ((ptr = mmap(ptr, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
+	{
+		fprintf(stderr, "mmap: error\n");
+		return (EXIT_FAILURE);
+	}
+
+	ret = ft_nm(buf.st_size, ptr);
+
+	if (munmap(ptr, buf.st_size) < 0)
+	{
+		fprintf(stderr, "munmap: error\n");
+		return (EXIT_FAILURE);
+	}
+
+    //close !!
+
+	return (EXIT_SUCCESS);
 }

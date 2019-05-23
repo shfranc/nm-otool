@@ -1,5 +1,5 @@
 NAME = ft_nm
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror
 CC = gcc
 
 LIB = libft.a
@@ -8,12 +8,8 @@ PATH_SRCS = srcs
 PATH_OBJS = objs
 
 SRCS = $(addprefix $(PATH_SRCS)/, main.c \
-	options.c \
-	ft_nm.c \
 	magic_64.c \
-	fat.c \
-	archive.c \
-	magic_64.c ) 
+	type.c) 
 OBJS = $(SRCS:$(PATH_SRCS)/%.c=$(PATH_OBJS)/%.o)
 INCS = incs $(PATH_LIB)/includes
 
