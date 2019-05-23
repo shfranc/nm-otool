@@ -1,89 +1,128 @@
 #include "ft_nm.h"
 
-t_symbol64    *create_symboles_table(size_t nb_symb) // dispensable ?
+t_symbol    *create_symbols_table(size_t nb_symb) // dispensable ?
 {
-    t_symbol64     *symbols;
+    t_symbol     *symbols;
     
-    if (!(symbols = (t_symbol64*)ft_memalloc(sizeof(t_symbol64) * nb_symb)))
+    if (!(symbols = (t_symbol*)ft_memalloc(sizeof(t_symbol) * nb_symb)))
     {
         return (NULL);
     }
     return (symbols);
 }
 
-char		get_type_char(struct nlist_64 *elem, void *ptr)
+char		get_type_char(uint8_t type, t_bin_file *file)
 {
-	(void)elem;
-	(void)ptr;
-	return ('X');
+	uint8_t mask;
+	unsigned char type_char;
+	(void)file->ptr;
+	printf("%d ", type);
+	
+	// debug, see stab.h afer
+	if (type & N_STAB)
+		return ('-');
+
+	// limited global scope ??	
+	if (type & N_PEXT)
+		return ('?');
+	
+	// type of the symbol
+	mask = type & N_TYPE;
+	if (mask == N_UNDF)
+	{
+		printf("N_UNDF ");
+		type_char = 'U';
+	}
+	if (mask == N_ABS)
+	{
+		printf("N_ABS ");
+		type_char = 'A';
+	}
+	if (mask == N_PBUD)
+	{
+		printf("N_PBUD ");
+		type_char = 'A';
+	}
+	if (mask == N_INDR)
+	{
+		printf("N_INDR ");
+		type_char = '?'; // symbol is the same as another symbol, n_value field is an index into the string table specifying the name of the other symbol.
+	}
+	if (mask == N_SECT)
+	{
+		printf("N_SECT ");
+		type_char = 'T'; // T ou D ou B
+	}
+
+	if (!(type & N_EXT)) // local symbol --> minuscule
+		type_char ^= TOGGLE_CASE;
+	printf("%c\n", type_char);
+	return (type_char);
 }
 
-void        fill_symboles_table(struct symtab_command *symtab_cmd, t_symbol64 *symboles, void *ptr)
+void        fill_symbols_table_64(t_bin_file *file)
 {
 	size_t			i;
 	char			*stringtable;
 	struct nlist_64	*elem;
 
-	elem = ptr + symtab_cmd->symoff;
-	stringtable = ptr + symtab_cmd->stroff;
+	elem = file->ptr + file->symtab_cmd->symoff;
+	stringtable = file->ptr + file->symtab_cmd->stroff;
 
 	i = 0;
-	while (i < symtab_cmd->nsyms)
+	while (i < file->symtab_cmd->nsyms)
 	{
-        symboles[i].name = stringtable + elem[i].n_un.n_strx;
-        symboles[i].type = elem[i].n_type;
-		symboles[i].type_char = get_type_char(elem, ptr);
+		file->symbols[i].addr = (void*)elem;
+        file->symbols[i].name = stringtable + elem[i].n_un.n_strx;
+		file->symbols[i].type = get_type_char(elem[i].n_type, file);
         i++;
 	}
 }
 
-void        print_symboles_table(t_symbol64 *symboles, size_t nb_symb)
+void        print_symbols_table(t_bin_file *file)
 {
 	size_t			i;
 
     i = 0;
 	ft_putendl("=================================");
-    while (i < nb_symb)
+    while (i < file->symtab_cmd->nsyms)
     {
 		ft_putnbr(0);
 		ft_putstr(" ");
-		ft_putchar(symboles[i].type_char);
+		ft_putchar(file->symbols[i].type);
 		ft_putstr(" ");
-		ft_putendl(symboles[i].name);
+		ft_putendl(file->symbols[i].name);
         i++;
     }
 
 }
 
 
-t_ex_ret	handle_magic_64(size_t size, void *ptr)
+t_ex_ret	handle_magic_64(t_bin_file *file)
 {
 	int						cmd_number;
 	int						i;
 	struct mach_header_64	*header;
 	struct load_command		*lc;
-	struct symtab_command	*symtab_cmd;
-    t_symbol64             *symboles;
 
-    (void)size;
-    (void)symboles;
-	header = (struct mach_header_64 *)ptr;
+    (void)file->size;
+	header = (struct mach_header_64 *)file->ptr;
 	cmd_number = header->ncmds;
 
-	lc = ptr + sizeof(*header);
+	lc = file->ptr + sizeof(*header);
 	i = 0;
 	while (i < cmd_number)
 	{
 		if (lc->cmd == LC_SYMTAB)
 		{
 			puts("Section SYMTAB");
-			symtab_cmd = (struct symtab_command *)lc;
-			printf("nb symbols: %d\n", symtab_cmd->nsyms);
-            if (!(symboles = create_symboles_table(symtab_cmd->nsyms)))
+			file->symtab_cmd = (struct symtab_command *)lc;
+			printf("nb symbols: %d\n", file->symtab_cmd->nsyms);
+            if (!(file->symbols = create_symbols_table(file->symtab_cmd->nsyms)))
                 return (FAILURE);
-            fill_symboles_table(symtab_cmd, symboles, ptr);
-            print_symboles_table(symboles, symtab_cmd->nsyms);
-            free(symboles);
+            fill_symbols_table_64(file);
+            print_symbols_table(file);
+            free(file->symbols);
 			return (SUCCESS);
 		}
         i++;
@@ -95,27 +134,30 @@ t_ex_ret	handle_magic_64(size_t size, void *ptr)
 
 t_ex_ret	ft_nm(size_t size, void *ptr)
 {
+	t_bin_file		file;
     t_ex_ret        ret;
-	unsigned int	magic_number;
 
-	magic_number = *(int *)ptr;
+
+	file.ptr = ptr;
+	file.size = size;
+	file.magic_number = *(int *)ptr;
     ret = FAILURE;
-	printf("magic number: %x\n", magic_number);
+	printf("magic number: %x\n", file.magic_number);
 
-    if (magic_number == MH_MAGIC)
+    if (file.magic_number == MH_MAGIC)
     {
 		printf("MAGIC 32 bits\n");
 	}
-    else if (magic_number == MH_MAGIC_64)
+    else if (file.magic_number == MH_MAGIC_64)
 	{
 		printf("MAGIC 64 bits\n");
-		ret = handle_magic_64(size, ptr);
+		ret = handle_magic_64(&file);
 	}
-    else if (magic_number == MH_CIGAM)
+    else if (file.magic_number == MH_CIGAM)
     {
 		printf("CIGAM 32 bits\n");
 	}
-    else if (magic_number == MH_CIGAM_64)
+    else if (file.magic_number == MH_CIGAM_64)
     {
 		printf("CIGAM 64 bits\n");
 	}

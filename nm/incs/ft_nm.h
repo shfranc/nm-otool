@@ -1,8 +1,9 @@
 #ifndef FT_NM_H
 # define FT_NM_H
 
+#include <stdio.h> // debug
+
 #include <fcntl.h>
-#include <stdio.h>
 #include <sys/mman.h>
 #include <mach-o/loader.h>
 #include <mach-o/nlist.h>
@@ -10,24 +11,29 @@
 
 # include "libft.h"
 
-typedef enum	    e_ex_ret
+#define TOGGLE_CASE			32
+
+typedef enum	    		e_ex_ret
 {
 	SUCCESS = EXIT_SUCCESS,
 	FAILURE = EXIT_FAILURE
-}                   t_ex_ret;
+}                   		t_ex_ret;
 
-typedef	struct		s_symbol64 {
-	// struct nlist_64			*symbole;
-    char                    *name;
-	char					type_char;
-	uint64_t				type;
-}					t_symbol64;
-
-typedef struct		s_tools
+typedef	struct				s_symbol
 {
-	int				flag;
+	void					*addr;
+    char                    *name;
+	char					type;
+}							t_symbol;
 
-}					t_tools;
-
+typedef struct				s_bin_file
+{
+	void					*ptr;
+	void					*end;
+	size_t					size;
+	unsigned int			magic_number;
+	struct symtab_command	*symtab_cmd;
+	t_symbol				*symbols;
+}							t_bin_file;
 
 #endif
