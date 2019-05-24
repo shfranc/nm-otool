@@ -19,7 +19,7 @@ static void        fill_symbols_table_64(t_bin_file *file)
 	}
 }
 
-static void        print_symbols_table(t_bin_file *file)
+static void        print_symbols_table_64(t_bin_file *file)
 {
 	size_t			i;
 
@@ -37,10 +37,9 @@ static void        print_symbols_table(t_bin_file *file)
 		ft_putendl(file->symbols[i].name);
         i++;
     }
-
 }
 
-static void	get_sections_indices_64(t_bin_file *file, struct segment_command_64 *segment, uint8_t nb_sect)
+static void	       get_sections_indices_64(t_bin_file *file, struct segment_command_64 *segment, uint8_t nb_sect)
 {
 	uint32_t 					i;
 	struct section_64	*section;
@@ -60,7 +59,7 @@ static void	get_sections_indices_64(t_bin_file *file, struct segment_command_64 
 	}
 }
 
-t_ex_ret	handle_magic_64(t_bin_file *file)
+t_ex_ret	        handle_magic_64(t_bin_file *file)
 {
 	int						cmd_number;
 	int						i;
@@ -100,7 +99,9 @@ t_ex_ret	handle_magic_64(t_bin_file *file)
     if (!(file->symbols = (t_symbol*)ft_memalloc(sizeof(t_symbol) * file->symtab_cmd->nsyms)))
 		return (FAILURE);
 	fill_symbols_table_64(file);
-	print_symbols_table(file);
+	print_symbols_table_64(file);
+    sort_symbols(file);
+	print_symbols_table_64(file);
 	free(file->symbols);
 	return (SUCCESS);
 

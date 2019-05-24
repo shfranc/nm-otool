@@ -23,9 +23,9 @@ char		get_type_char(uint8_t type, uint8_t sect, uint64_t value, t_bin_file *file
 	if (type & N_STAB)
 		return ('-');
 
-	// limited global scope ??	
-	if (type & N_PEXT)
-		return (' ');
+	// // limited global scope ??	
+	// if (type & N_PEXT)
+	// 	return (' ');
 	
 	// type of the symbol
 	mask = type & N_TYPE;
