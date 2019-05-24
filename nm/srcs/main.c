@@ -7,28 +7,28 @@ static t_ex_ret	ft_nm(char *filename, size_t size, void *ptr)
 
 	magic_number = *(uint32_t *)ptr;
     ret = FAILURE;
-	printf("magic number: %x\n", magic_number);
+	// printf("magic number: %x\n", magic_number);
 
     if (magic_number == MH_MAGIC)
     {
-		printf("MAGIC 32 bits\n");
+		// printf("MAGIC 32 bits\n");
 	}
     else if (magic_number == MH_MAGIC_64)
 	{
-		printf("MAGIC 64 bits\n");
+		// printf("MAGIC 64 bits\n");
 		ret = handle_magic_64(filename, size, ptr);
 	}
     else if (magic_number == MH_CIGAM)
     {
-		printf("CIGAM 32 bits\n");
+		// printf("CIGAM 32 bits\n");
 	}
     else if (magic_number == MH_CIGAM_64)
     {
-		printf("CIGAM 64 bits\n");
+		// printf("CIGAM 64 bits\n");
 	}
     else
     {
-        dprintf(2, "Wrong magic number\n");
+        // dprintf(2, "Wrong magic number\n");
     }
 
     return (ret);

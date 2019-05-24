@@ -5,7 +5,6 @@ static void        print_symbols_table_64(t_bin_file *file)
 	size_t			i;
 
     i = 0;
-	ft_putendl("=================================");
     while (i < file->symtab_cmd->nsyms)
     {
         if (file->symbols[i].type != 'U' && file->symbols[i].type != 'u')
@@ -20,23 +19,29 @@ static void        print_symbols_table_64(t_bin_file *file)
     }
 }
 
-static void         fill_symbols_table_64(t_bin_file *file)
+static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 {
 	size_t			i;
-	char			*stringtable;
 	struct nlist_64	*nlist;
+	char			*stringtable;
+	void			*check;
 
 	nlist = (struct nlist_64 *)(file->ptr + file->symtab_cmd->symoff);
-	stringtable = (char *)(file->ptr + file->symtab_cmd->stroff);
-
+	check = is_in_file(file, nlist, sizeof(*nlist) * file->symtab_cmd->nsyms);
+	stringtable = (char *)is_in_file(file, (file->ptr \
+		+ file->symtab_cmd->stroff), sizeof(*stringtable));
+	if (!check || !stringtable)
+        return (put_error(file->filename, VALID_OBJECT));
 	i = 0;
 	while (i < file->symtab_cmd->nsyms)
 	{
 		file->symbols[i].value = nlist[i].n_value;
-        file->symbols[i].name = stringtable + nlist[i].n_un.n_strx;
-		file->symbols[i].type = get_type_char(nlist[i].n_type, nlist[i].n_sect, nlist[i].n_value, file);
+        file->symbols[i].name = stringtable + nlist[i].n_un.n_strx; // add check
+		file->symbols[i].type = get_type_char(nlist[i].n_type, \
+			nlist[i].n_sect, nlist[i].n_value, file);
         i++;
 	}
+	return (SUCCESS);
 }
 
 static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
@@ -50,7 +55,7 @@ static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
 	section = (struct section_64 *)is_in_file(file, ((void *)segment \
 		+ sizeof(struct segment_command_64)), sizeof(*section));
 	size_sections = segment->nsects * sizeof(*section);
-	if (!section || !(check = is_in_file(file, section, size_section)))
+	if (!section || !(check = is_in_file(file, section, size_sections)))
         return (put_error(file->filename, VALID_OBJECT));
 	i = 0;
 	while (i < segment->nsects)
@@ -130,7 +135,8 @@ t_ex_ret	        handle_magic_64(char *filename, size_t size, void *ptr)
 		* file.symtab_cmd->nsyms);
     if (!file.symbols)
 		return (FAILURE);
-	fill_symbols_table_64(&file);
+	if (fill_symbols_table_64(&file) == FAILURE)
+		return (FAILURE);
     sort_symbols(&file);
 	print_symbols_table_64(&file);
 	free(file.symbols);
