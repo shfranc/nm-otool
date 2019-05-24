@@ -21,7 +21,7 @@ typedef enum	    		e_ex_ret
 
 typedef	struct				s_symbol
 {
-	void					*addr;
+	uint64_t				value;
     char                    *name;
 	char					type;
 }							t_symbol;

@@ -12,7 +12,7 @@ static void        fill_symbols_table_64(t_bin_file *file)
 	i = 0;
 	while (i < file->symtab_cmd->nsyms)
 	{
-		file->symbols[i].addr = (void*)elem;
+		file->symbols[i].value = elem[i].n_value;
         file->symbols[i].name = stringtable + elem[i].n_un.n_strx;
 		file->symbols[i].type = get_type_char(elem[i].n_type, elem[i].n_sect, elem[i].n_value, file);
         i++;
@@ -27,10 +27,13 @@ static void        print_symbols_table(t_bin_file *file)
 	ft_putendl("=================================");
     while (i < file->symtab_cmd->nsyms)
     {
-		ft_putnbr(0);
-		ft_putstr(" ");
+        if (file->symbols[i].type != 'U' && file->symbols[i].type != 'u')
+		    ft_puthexa(file->symbols[i].value);
+        else
+            write(1, "                ", 16);
+        write(1, " ", 1);
 		ft_putchar(file->symbols[i].type);
-		ft_putstr(" ");
+        write(1, " ", 1);
 		ft_putendl(file->symbols[i].name);
         i++;
     }
