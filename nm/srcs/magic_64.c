@@ -7,6 +7,11 @@ static void        print_symbols_table_64(t_bin_file *file)
     i = 0;
     while (i < file->symtab_cmd->nsyms)
     {
+		if (file->symbols[i].type == '-')
+		{
+			i++;
+			continue ;
+		}
         if (file->symbols[i].type != 'U' && file->symbols[i].type != 'u')
 		    ft_puthexa(file->symbols[i].value);
         else
