@@ -10,7 +10,9 @@ PATH_OBJS = objs
 SRCS = $(addprefix $(PATH_SRCS)/, main.c \
 	magic_64.c \
 	type.c \
-	sort.c) 
+	sort.c \
+	check.c \
+	error.c) 
 OBJS = $(SRCS:$(PATH_SRCS)/%.c=$(PATH_OBJS)/%.o)
 INCS = incs $(PATH_LIB)/includes
 
