@@ -24,27 +24,33 @@ static void         fill_symbols_table_64(t_bin_file *file)
 {
 	size_t			i;
 	char			*stringtable;
-	struct nlist_64	*elem;
+	struct nlist_64	*nlist;
 
-	elem = (struct nlist_64 *)(file->ptr + file->symtab_cmd->symoff);
+	nlist = (struct nlist_64 *)(file->ptr + file->symtab_cmd->symoff);
 	stringtable = (char *)(file->ptr + file->symtab_cmd->stroff);
 
 	i = 0;
 	while (i < file->symtab_cmd->nsyms)
 	{
-		file->symbols[i].value = elem[i].n_value;
-        file->symbols[i].name = stringtable + elem[i].n_un.n_strx;
-		file->symbols[i].type = get_type_char(elem[i].n_type, elem[i].n_sect, elem[i].n_value, file);
+		file->symbols[i].value = nlist[i].n_value;
+        file->symbols[i].name = stringtable + nlist[i].n_un.n_strx;
+		file->symbols[i].type = get_type_char(nlist[i].n_type, nlist[i].n_sect, nlist[i].n_value, file);
         i++;
 	}
 }
 
-static t_ex_ret	       get_sections_indices_64(t_bin_file *file, struct segment_command_64 *segment, uint8_t nb_sect)
+static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
+							struct segment_command_64 *segment, uint8_t nb_sect)
 {
 	uint32_t 					i;
-	struct section_64	*section;
+	size_t						size_sections;
+	struct section_64			*section;
+	void						*check;
 
-	if (!(section = (struct section_64 *)is_in_file(file, ((void *)segment + sizeof(struct segment_command_64)), sizeof(*section))))
+	section = (struct section_64 *)is_in_file(file, ((void *)segment \
+		+ sizeof(struct segment_command_64)), sizeof(*section));
+	size_sections = segment->nsects * sizeof(*section);
+	if (!section || !(check = is_in_file(file, section, size_section)))
         return (put_error(file->filename, VALID_OBJECT));
 	i = 0;
 	while (i < segment->nsects)
@@ -55,14 +61,15 @@ static t_ex_ret	       get_sections_indices_64(t_bin_file *file, struct segment_
 			file->data_index = i + nb_sect;
 		else if (ft_strcmp(section->sectname, SECT_BSS) == 0)
 			file->bss_index = i + nb_sect;
-		if (!(section = (struct section_64 *)is_in_file(file, ((void *)section + sizeof(struct section_64)), sizeof(*section))))
-            return (put_error(file->filename, VALID_OBJECT));
+		section = (struct section_64 *)is_in_file(file, ((void *)section \
+			+ sizeof(struct section_64)), sizeof(*section));
 		i++;
 	}
     return (SUCCESS);
 }
 
-static t_ex_ret       init_file_64(t_bin_file *file, char *filename, size_t size, void *ptr)
+static t_ex_ret			init_file_64(t_bin_file *file, char *filename, \
+							size_t size, void *ptr)
 {
 	struct mach_header_64	        *header;
 	struct load_command		        *lc;
@@ -75,9 +82,13 @@ static t_ex_ret       init_file_64(t_bin_file *file, char *filename, size_t size
 	file->ptr = ptr;
 	file->size = size;
 	file->end = ptr + size;
-    if (!(header = (struct mach_header_64 *)is_in_file(file, file->ptr, sizeof(*header))))
+    header = (struct mach_header_64 *)is_in_file(file, file->ptr, \
+		sizeof(*header));
+    if (!header)
         return (put_error(file->filename, VALID_OBJECT));
-    if (!(lc = (struct load_command *)is_in_file(file, file->ptr + sizeof(*header), sizeof(*lc))))
+    lc = (struct load_command *)is_in_file(file, file->ptr + sizeof(*header), \
+		sizeof(*lc));
+    if (!lc)
         return (put_error(file->filename, VALID_OBJECT));
 	i = 0;
 	nb_sect = 1;
@@ -85,19 +96,25 @@ static t_ex_ret       init_file_64(t_bin_file *file, char *filename, size_t size
 	{
 		if (lc->cmd == LC_SYMTAB)
         {
-			if (!(file->symtab_cmd = (struct symtab_command *)is_in_file(file, lc, sizeof(*(file->symtab_cmd)))))
+			file->symtab_cmd = (struct symtab_command *)is_in_file(file, lc, \
+				sizeof(*(file->symtab_cmd)));
+			if (!file->symtab_cmd)
                 return (put_error(file->filename, VALID_OBJECT));
         }
 		else if (lc->cmd == LC_SEGMENT_64)
 		{
-			if (!(segment = (struct segment_command_64 *)is_in_file(file, lc, sizeof(*segment))))
+			segment = (struct segment_command_64 *)is_in_file(file, lc, \
+				sizeof(*segment));
+			if (!segment)
                 return (put_error(file->filename, VALID_OBJECT));
 			if (get_sections_indices_64(file, segment, nb_sect) == FAILURE)
                 return (FAILURE);
 			nb_sect += segment->nsects;
 		}
         i++;
-		if (!(lc = (struct load_command *)is_in_file(file, (void *)lc + lc->cmdsize, sizeof(*lc))))
+		lc = (struct load_command *)is_in_file(file, (void *)lc \
+			+ lc->cmdsize, sizeof(*lc));
+		if (!lc)
             return (put_error(file->filename, VALID_OBJECT));
 	}
     return (SUCCESS);
@@ -109,7 +126,9 @@ t_ex_ret	        handle_magic_64(char *filename, size_t size, void *ptr)
 
     if (init_file_64(&file, filename, size, ptr) == FAILURE)
         return (FAILURE);
-    if (!(file.symbols = (t_symbol*)ft_memalloc(sizeof(t_symbol) * file.symtab_cmd->nsyms)))
+    file.symbols = (t_symbol*)ft_memalloc(sizeof(t_symbol) \
+		* file.symtab_cmd->nsyms);
+    if (!file.symbols)
 		return (FAILURE);
 	fill_symbols_table_64(&file);
     sort_symbols(&file);
