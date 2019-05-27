@@ -1,10 +1,9 @@
 #ifndef FT_NM_H
 # define FT_NM_H
 
-# include "libft.h"
-
 # include <stdio.h> // debug
 
+# include "libft.h"
 # include <fcntl.h>
 # include <sys/mman.h>
 # include <mach-o/loader.h>
@@ -37,11 +36,11 @@ typedef struct				s_bin_file
 
 t_ex_ret	        handle_magic_64(char *filename, size_t size, void *ptr);
 
-char				get_type_char(uint8_t type, uint8_t sect, uint64_t value, t_bin_file *file);
-void    			sort_symbols(t_bin_file *file);
+char				get_type_char(uint8_t type, uint8_t sect, uint64_t value,
+						t_bin_file *file);
+t_ex_ret 			sort_symbols(t_bin_file *file);
 
-// t_bool              is_in_file(t_bin_file *file, void *dest);
-void        *is_in_file(t_bin_file *file, void *current, size_t size);
+void        		*is_in_file(t_bin_file *file, void *current, size_t size);
 t_ex_ret    		put_error(char *filename, char *message);
 
 #endif
