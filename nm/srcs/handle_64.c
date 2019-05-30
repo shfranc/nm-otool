@@ -26,6 +26,19 @@ static void        print_symbols_table_64(t_bin_file *file)
     }
 }
 
+static void			fill_one_symbol_64(t_bin_file *file, char *stringtable, \
+						t_symbol *symbol, struct nlist_64 *nlist)
+{
+	symbol->value = swap64_if(nlist->n_value, file->endian);
+	symbol->name = (char *)is_in_file(file, \
+		stringtable + swap32_if(nlist->n_un.n_strx, file->endian), \
+		sizeof(*symbol->name));
+	if (!symbol->name)
+		symbol->name = BAD_STRING_INDEX;
+	symbol->type = get_type_char(nlist->n_type, \
+		nlist->n_sect, nlist->n_value, file);
+}
+
 static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 {
 	size_t			i;
@@ -45,14 +58,7 @@ static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 	i = 0;
 	while (i < nsyms)
 	{
-		file->symbols[i].value = swap64_if(nlist[i].n_value, file->endian);
-        file->symbols[i].name = (char *)is_in_file(file, \
-			stringtable + swap32_if(nlist[i].n_un.n_strx, file->endian), \
-			sizeof(*file->symbols[i].name));
-		if (!file->symbols[i].name)
-			file->symbols[i].name = BAD_STRING_INDEX;
-		file->symbols[i].type = get_type_char(nlist[i].n_type, \
-			nlist[i].n_sect, nlist[i].n_value, file);
+		fill_one_symbol_64(file, stringtable, &file->symbols[i], &nlist[i]);
         i++;
 	}
 	return (SUCCESS);
@@ -88,25 +94,35 @@ static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
     return (SUCCESS);
 }
 
-static t_ex_ret			init_file_64(t_bin_file *file)
+static t_ex_ret			get_load_commands(t_bin_file *file, struct load_command **lc, uint32_t *ncmds)
 {
 	struct mach_header_64	        *header;
+
+	header = (struct mach_header_64 *)is_in_file(file, file->ptr, \
+		sizeof(*header));
+    if (!header)
+        return (put_error(file->filename, VALID_OBJECT));
+	*ncmds = swap32_if(header->ncmds, file->endian);
+	*lc = (struct load_command *)is_in_file(file, file->ptr + sizeof(*header), \
+		sizeof(**lc));
+    if (!*lc)
+        return (put_error(file->filename, VALID_OBJECT));
+	return (SUCCESS);
+}
+
+static t_ex_ret			init_file_64(t_bin_file *file)
+{
+	uint32_t 						ncmds;
 	struct load_command		        *lc;
 	struct segment_command_64	    *segment;
 	uint32_t					    i;
 	uint8_t					        nb_sect;
 
-    header = (struct mach_header_64 *)is_in_file(file, file->ptr, \
-		sizeof(*header));
-    if (!header)
-        return (put_error(file->filename, VALID_OBJECT));
-    lc = (struct load_command *)is_in_file(file, file->ptr + sizeof(*header), \
-		sizeof(*lc));
-    if (!lc)
-        return (put_error(file->filename, VALID_OBJECT));
+	if (get_load_commands(file, &lc, &ncmds) == FAILURE)
+		return (FAILURE);
 	i = 0;
 	nb_sect = 1;
-	while (i < swap32_if(header->ncmds, file->endian))
+	while (i < ncmds)
 	{
 		if (lc->cmd == LC_SYMTAB)
         {
