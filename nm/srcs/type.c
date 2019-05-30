@@ -19,17 +19,12 @@ char		get_type_char(uint8_t type, uint8_t sect, uint64_t value, t_bin_file *file
 	uint8_t mask;
 	char type_char;
 
-	// debug, see stab.h afer
+	type_char = '?';
 	if (type & N_STAB)
-		return ('-');
+		type_char = '-';
 
-	// limited global scope ??	
-	if (type & N_PEXT)
-		return (' ');
-	
-	// type of the symbol
 	mask = type & N_TYPE;
-	if (mask == N_UNDF)
+	if (mask == N_UNDF && (type & N_EXT))
 		type_char = 'U';
 	if (mask == N_ABS)
 		type_char = 'A';
@@ -39,10 +34,10 @@ char		get_type_char(uint8_t type, uint8_t sect, uint64_t value, t_bin_file *file
 		type_char = 'I';
 	if (mask == N_SECT)
 		type_char = get_section(sect, file);
-	if (mask == N_UNDF && value) // et ext ?
+	if (mask == N_UNDF && value && (type & N_EXT))
 		type_char = 'C';
 
-	if (!(type & N_EXT)) // local symbol --> minuscule
+	if (ft_isalpha(type_char) && !(type & N_EXT)) // local symbol --> minuscule
 		type_char ^= TOGGLE_CASE;
 	return (type_char);
 }

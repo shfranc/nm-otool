@@ -1,37 +1,34 @@
 #include "ft_nm.h"
 
-static t_ex_ret	ft_nm(size_t size, void *ptr)
+static t_ex_ret	ft_nm(char *filename, size_t size, void *ptr)
 {
-	t_bin_file		file;
     t_ex_ret        ret;
+	uint32_t				magic_number;
 
-	ft_bzero(&file, sizeof(file));
-	file.ptr = ptr;
-	file.size = size;
-	file.magic_number = *(int *)ptr;
+	magic_number = *(uint32_t *)ptr;
     ret = FAILURE;
-	printf("magic number: %x\n", file.magic_number);
+	// printf("magic number: %x\n", magic_number);
 
-    if (file.magic_number == MH_MAGIC)
+    if (magic_number == MH_MAGIC)
     {
-		printf("MAGIC 32 bits\n");
+		// printf("MAGIC 32 bits\n");
 	}
-    else if (file.magic_number == MH_MAGIC_64)
+    else if (magic_number == MH_MAGIC_64)
 	{
-		printf("MAGIC 64 bits\n");
-		ret = handle_magic_64(&file);
+		// printf("MAGIC 64 bits\n");
+		ret = handle_magic_64(filename, size, ptr);
 	}
-    else if (file.magic_number == MH_CIGAM)
+    else if (magic_number == MH_CIGAM)
     {
-		printf("CIGAM 32 bits\n");
+		// printf("CIGAM 32 bits\n");
 	}
-    else if (file.magic_number == MH_CIGAM_64)
+    else if (magic_number == MH_CIGAM_64)
     {
-		printf("CIGAM 64 bits\n");
+		// printf("CIGAM 64 bits\n");
 	}
     else
     {
-        dprintf(2, "Wrong magic number\n");
+        // dprintf(2, "Wrong magic number\n");
     }
 
     return (ret);
@@ -70,7 +67,7 @@ int		main(int ac, char **av)
 		return (EXIT_FAILURE);
 	}
 
-	ret = ft_nm(buf.st_size, ptr);
+	ret = ft_nm(av[1], buf.st_size, ptr);
 
 	if (munmap(ptr, buf.st_size) < 0)
 	{
@@ -80,5 +77,6 @@ int		main(int ac, char **av)
 
     //close !!
 
-	return (EXIT_SUCCESS);
+	// while(1);
+	return (ret);
 }
