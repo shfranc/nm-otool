@@ -110,11 +110,35 @@ static t_ex_ret			get_load_commands(t_bin_file *file, struct load_command **lc, 
 	return (SUCCESS);
 }
 
+static t_ex_ret			get_info_from_load_commands(t_bin_file *file, \
+							struct load_command *lc, uint8_t *nb_sect)
+{
+	struct segment_command_64	    *segment;
+
+	if (lc->cmd == LC_SYMTAB)
+	{
+		file->symtab_cmd = (struct symtab_command *)is_in_file(file, lc, \
+			sizeof(*(file->symtab_cmd)));
+		if (!file->symtab_cmd)
+			return (put_error(file->filename, VALID_OBJECT));
+	}
+	else if (lc->cmd == LC_SEGMENT_64)
+	{
+		segment = (struct segment_command_64 *)is_in_file(file, lc, \
+			sizeof(*segment));
+		if (!segment)
+			return (put_error(file->filename, VALID_OBJECT));
+		if (get_sections_indices_64(file, segment, *nb_sect) == FAILURE)
+			return (FAILURE);
+		*nb_sect += swap32_if(segment->nsects, file->endian);
+	}
+	return (SUCCESS);
+}
+
 static t_ex_ret			init_file_64(t_bin_file *file)
 {
 	uint32_t 						ncmds;
 	struct load_command		        *lc;
-	struct segment_command_64	    *segment;
 	uint32_t					    i;
 	uint8_t					        nb_sect;
 
@@ -124,30 +148,16 @@ static t_ex_ret			init_file_64(t_bin_file *file)
 	nb_sect = 1;
 	while (i < ncmds)
 	{
-		if (lc->cmd == LC_SYMTAB)
-        {
-			file->symtab_cmd = (struct symtab_command *)is_in_file(file, lc, \
-				sizeof(*(file->symtab_cmd)));
-			if (!file->symtab_cmd)
-                return (put_error(file->filename, VALID_OBJECT));
-        }
-		else if (lc->cmd == LC_SEGMENT_64)
-		{
-			segment = (struct segment_command_64 *)is_in_file(file, lc, \
-				sizeof(*segment));
-			if (!segment)
-                return (put_error(file->filename, VALID_OBJECT));
-			if (get_sections_indices_64(file, segment, nb_sect) == FAILURE)
-                return (FAILURE);
-			nb_sect += swap32_if(segment->nsects, file->endian);
-		}
-        i++;
+		if (get_info_from_load_commands(file, lc, &nb_sect) == FAILURE)
+			return (FAILURE);
 		if ((swap32_if(lc->cmdsize, file->endian) % 8) != 0)
             return (put_error(file->filename, VALID_OBJECT));
+		i++;
 		lc = (struct load_command *)is_in_file(file, (void *)lc \
 			+ swap32_if(lc->cmdsize, file->endian), sizeof(*lc));
-		if (!lc)
+		if (i < ncmds && !lc)
             return (put_error(file->filename, VALID_OBJECT));
+
 	}
     return (SUCCESS);
 }
