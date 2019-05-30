@@ -16,7 +16,7 @@ static t_ex_ret	ft_nm(char *filename, size_t size, void *ptr)
     else if (magic_number == MH_MAGIC_64)
 	{
 		// printf("MAGIC 64 bits\n");
-		ret = handle_magic_64(filename, size, ptr);
+		ret = handle_magic_64(filename, magic_number, size, ptr);
 	}
     else if (magic_number == MH_CIGAM)
     {

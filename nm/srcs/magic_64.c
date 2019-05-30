@@ -80,8 +80,7 @@ static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
     return (SUCCESS);
 }
 
-static t_ex_ret			init_file_64(t_bin_file *file, char *filename, \
-							size_t size, void *ptr)
+static t_ex_ret			init_file_64(t_bin_file *file)
 {
 	struct mach_header_64	        *header;
 	struct load_command		        *lc;
@@ -89,11 +88,6 @@ static t_ex_ret			init_file_64(t_bin_file *file, char *filename, \
 	uint32_t					    i;
 	uint8_t					        nb_sect;
 
-    ft_bzero(file, sizeof(file));
-    file->filename = filename;
-	file->ptr = ptr;
-	file->size = size;
-	file->end = ptr + size;
     header = (struct mach_header_64 *)is_in_file(file, file->ptr, \
 		sizeof(*header));
     if (!header)
@@ -132,11 +126,18 @@ static t_ex_ret			init_file_64(t_bin_file *file, char *filename, \
     return (SUCCESS);
 }
 
-t_ex_ret	        handle_magic_64(char *filename, size_t size, void *ptr)
+t_ex_ret	        handle_magic_64(char *filename, uint8_t magic_number, \
+						size_t size, void *ptr)
 {
 	t_bin_file		        file;
 
-    if (init_file_64(&file, filename, size, ptr) == FAILURE)
+    ft_bzero(&file, sizeof(file));
+    file.filename = filename;
+	file.magic_number = magic_number;
+	file.ptr = ptr;
+	file.size = size;
+	file.end = ptr + size;
+    if (init_file_64(&file) == FAILURE)
         return (FAILURE);
     file.symbols = (t_symbol*)ft_memalloc(sizeof(t_symbol) \
 		* file.symtab_cmd->nsyms);
@@ -144,7 +145,8 @@ t_ex_ret	        handle_magic_64(char *filename, size_t size, void *ptr)
 		return (FAILURE);
 	if (fill_symbols_table_64(&file) == FAILURE)
 		return (FAILURE);
-    sort_symbols(&file);
+    if (sort_symbols(&file) == FAILURE)
+		return (FAILURE);
 	print_symbols_table_64(&file);
 	free(file.symbols);
 	return (SUCCESS);

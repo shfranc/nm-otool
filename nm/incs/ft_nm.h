@@ -27,7 +27,7 @@ typedef struct				s_bin_file
 	void					*ptr;
 	void					*end;
 	size_t					size;
-	unsigned int			magic_number;
+	uint8_t					magic_number;
 	uint8_t					text_index;
 	uint8_t					data_index;
 	uint8_t					bss_index;
@@ -35,7 +35,8 @@ typedef struct				s_bin_file
 	t_symbol				*symbols;
 }							t_bin_file;
 
-t_ex_ret	        handle_magic_64(char *filename, size_t size, void *ptr);
+t_ex_ret	        handle_magic_64(char *filename, uint8_t magic_number, \
+						size_t size, void *ptr);
 
 char				get_type_char(uint8_t type, uint8_t sect, uint64_t value,
 						t_bin_file *file);
