@@ -1,6 +1,6 @@
 #include "ft_nm.h"
 
-static void        print_symbols_table_64(t_bin_file *file)
+static void			print_symbols_table_64(t_bin_file *file)
 {
 	size_t			i;
 	uint32_t		nsyms;
@@ -94,7 +94,8 @@ static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
     return (SUCCESS);
 }
 
-static t_ex_ret			get_load_commands(t_bin_file *file, struct load_command **lc, uint32_t *ncmds)
+static t_ex_ret			get_load_commands(t_bin_file *file, \
+							struct load_command **lc, uint32_t *ncmds)
 {
 	struct mach_header_64	        *header;
 
@@ -110,7 +111,7 @@ static t_ex_ret			get_load_commands(t_bin_file *file, struct load_command **lc, 
 	return (SUCCESS);
 }
 
-static t_ex_ret			get_info_from_load_commands(t_bin_file *file, \
+static t_ex_ret			get_info_from_load_command(t_bin_file *file, \
 							struct load_command *lc, uint8_t *nb_sect)
 {
 	struct segment_command_64	    *segment;
@@ -148,7 +149,7 @@ static t_ex_ret			init_file_64(t_bin_file *file)
 	nb_sect = 1;
 	while (i < ncmds)
 	{
-		if (get_info_from_load_commands(file, lc, &nb_sect) == FAILURE)
+		if (get_info_from_load_command(file, lc, &nb_sect) == FAILURE)
 			return (FAILURE);
 		if ((swap32_if(lc->cmdsize, file->endian) % 8) != 0)
             return (put_error(file->filename, VALID_OBJECT));
