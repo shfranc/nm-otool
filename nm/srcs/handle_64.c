@@ -35,7 +35,6 @@ static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 	uint32_t		nsyms;
 
 	nsyms = swap32_if(file->symtab_cmd->nsyms, file->endian);
-		// ft_putendl("fill_symbols_table begin");
 	nlist = (struct nlist_64 *)(file->ptr \
 		+ swap32_if(file->symtab_cmd->symoff, file->endian));
 	check = is_in_file(file, nlist, sizeof(*nlist) * nsyms);
@@ -46,7 +45,6 @@ static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 	i = 0;
 	while (i < nsyms)
 	{
-		// ft_putendl("fill_symbols_table while");
 		file->symbols[i].value = swap64_if(nlist[i].n_value, file->endian);
         file->symbols[i].name = (char *)is_in_file(file, \
 			stringtable + swap32_if(nlist[i].n_un.n_strx, file->endian), \
@@ -57,8 +55,6 @@ static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 			nlist[i].n_sect, nlist[i].n_value, file);
         i++;
 	}
-		// ft_putendl("fill_symbols_table end");
-
 	return (SUCCESS);
 }
 
@@ -80,7 +76,6 @@ static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
 	i = 0;
 	while (i < nsects)
 	{
-		// ft_putendl("get_sections_indices while");
 		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
 			file->text_index = i + nb_sect;
 		else if (ft_strcmp(section->sectname, SECT_DATA) == 0)
@@ -90,7 +85,6 @@ static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
 		section = (void *)section + sizeof(struct section_64);
 		i++;
 	}
-		// ft_putendl("get_sections_indices end");
     return (SUCCESS);
 }
 
@@ -114,7 +108,6 @@ static t_ex_ret			init_file_64(t_bin_file *file)
 	nb_sect = 1;
 	while (i < swap32_if(header->ncmds, file->endian))
 	{
-		// ft_putendl("init_file while");
 		if (lc->cmd == LC_SYMTAB)
         {
 			file->symtab_cmd = (struct symtab_command *)is_in_file(file, lc, \
@@ -140,11 +133,10 @@ static t_ex_ret			init_file_64(t_bin_file *file)
 		if (!lc)
             return (put_error(file->filename, VALID_OBJECT));
 	}
-	// ft_putendl("init_file end");
     return (SUCCESS);
 }
 
-t_ex_ret	        handle_magic_64(char *filename, t_endian endian, \
+t_ex_ret	        handle_64(t_endian endian, char *filename, \
 						size_t size, void *ptr)
 {
 	t_bin_file		        file;

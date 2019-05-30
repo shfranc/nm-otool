@@ -16,7 +16,7 @@ static t_ex_ret	ft_nm(char *filename, size_t size, void *ptr)
     else if (magic_number == MH_MAGIC_64)
 	{
 		// ft_putendl("MAGIC 64 bits");
-		ret = handle_magic_64(filename, MAGIC, size, ptr);
+		ret = handle_64(MAGIC, filename, size, ptr);
 	}
     else if (magic_number == MH_CIGAM)
     {
@@ -25,7 +25,7 @@ static t_ex_ret	ft_nm(char *filename, size_t size, void *ptr)
     else if (magic_number == MH_CIGAM_64)
     {
 		// ft_putendl("CIGAM 64 bits");
-		ret = handle_magic_64(filename, CIGAM, size, ptr);
+		ret = handle_64(CIGAM, filename, size, ptr);
 	}
 	else if (ft_strncmp(ptr, ARMAG, SARMAG) == 0)
 	{
