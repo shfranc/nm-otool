@@ -12,6 +12,7 @@
 
 # define TOGGLE_CASE		32
 # define VALID_OBJECT		"The file was not recognized as a valid object file"
+# define BAD_STRING_INDEX	"bad string index"
 
 typedef	struct				s_symbol
 {

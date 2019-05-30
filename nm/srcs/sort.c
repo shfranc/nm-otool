@@ -2,8 +2,10 @@
 
 static t_bool   comp_ascii(t_symbol *symb1, t_symbol *symb2)
 {
-    if (ft_strcmp(symb1->name, symb2->name) > 0)
-        return (TRUE);
+    if (ft_strcmp(symb1->name, symb2->name) == 0)
+        return (symb1->value >= symb2->value ? TRUE : FALSE);
+    else if (ft_strcmp(symb1->name, symb2->name) > 0)
+		return (TRUE);
     return (FALSE);
 }
 

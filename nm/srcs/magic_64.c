@@ -41,7 +41,10 @@ static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 	while (i < file->symtab_cmd->nsyms)
 	{
 		file->symbols[i].value = nlist[i].n_value;
-        file->symbols[i].name = stringtable + nlist[i].n_un.n_strx; // add check
+        file->symbols[i].name = (char *)is_in_file(file, stringtable \
+			+ nlist[i].n_un.n_strx, sizeof(*file->symbols[i].name));
+		if (!file->symbols[i].name)
+			file->symbols[i].name = BAD_STRING_INDEX;
 		file->symbols[i].type = get_type_char(nlist[i].n_type, \
 			nlist[i].n_sect, nlist[i].n_value, file);
         i++;
@@ -71,8 +74,7 @@ static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
 			file->data_index = i + nb_sect;
 		else if (ft_strcmp(section->sectname, SECT_BSS) == 0)
 			file->bss_index = i + nb_sect;
-		section = (struct section_64 *)is_in_file(file, ((void *)section \
-			+ sizeof(struct section_64)), sizeof(*section));
+		section = (void *)section + sizeof(struct section_64);
 		i++;
 	}
     return (SUCCESS);
