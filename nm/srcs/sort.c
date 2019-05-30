@@ -58,7 +58,11 @@ static t_ex_ret merge_sort(t_symbol *tab, int start_index, int end_index,
 
 t_ex_ret           sort_symbols(t_bin_file *file)
 {
-    if (merge_sort(file->symbols, 0, file->symtab_cmd->nsyms - 1, &comp_ascii) == FAILURE)
+    if (merge_sort(file->symbols, 0, \
+		swap32_if(file->symtab_cmd->nsyms, file->endian) - 1, \
+		&comp_ascii) == FAILURE)
+	{
         return (FAILURE);
+	}
     return (SUCCESS);
 }

@@ -3,9 +3,11 @@
 static void        print_symbols_table_64(t_bin_file *file)
 {
 	size_t			i;
+	uint32_t		nsyms;
 
     i = 0;
-    while (i < file->symtab_cmd->nsyms)
+	nsyms = swap32_if(file->symtab_cmd->nsyms, file->endian);
+    while (i < nsyms)
     {
 		if (file->symbols[i].type == '-')
 		{
@@ -30,21 +32,25 @@ static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 	struct nlist_64	*nlist;
 	char			*stringtable;
 	void			*check;
+	uint32_t		nsyms;
 
-		ft_putendl("fill_symbols_table begin");
-	nlist = (struct nlist_64 *)(file->ptr + file->symtab_cmd->symoff); // check symtab
-	check = is_in_file(file, nlist, sizeof(*nlist) * file->symtab_cmd->nsyms);
+	nsyms = swap32_if(file->symtab_cmd->nsyms, file->endian);
+		// ft_putendl("fill_symbols_table begin");
+	nlist = (struct nlist_64 *)(file->ptr \
+		+ swap32_if(file->symtab_cmd->symoff, file->endian));
+	check = is_in_file(file, nlist, sizeof(*nlist) * nsyms);
 	stringtable = (char *)is_in_file(file, (file->ptr \
 		+ file->symtab_cmd->stroff), sizeof(*stringtable));
 	if (!check || !stringtable)
         return (put_error(file->filename, VALID_OBJECT));
 	i = 0;
-	while (i < file->symtab_cmd->nsyms)
+	while (i < nsyms)
 	{
 		// ft_putendl("fill_symbols_table while");
-		file->symbols[i].value = nlist[i].n_value;
-        file->symbols[i].name = (char *)is_in_file(file, stringtable \
-			+ nlist[i].n_un.n_strx, sizeof(*file->symbols[i].name));
+		file->symbols[i].value = swap64_if(nlist[i].n_value, file->endian);
+        file->symbols[i].name = (char *)is_in_file(file, \
+			stringtable + swap32_if(nlist[i].n_un.n_strx, file->endian), \
+			sizeof(*file->symbols[i].name));
 		if (!file->symbols[i].name)
 			file->symbols[i].name = BAD_STRING_INDEX;
 		file->symbols[i].type = get_type_char(nlist[i].n_type, \
@@ -63,14 +69,16 @@ static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
 	size_t						size_sections;
 	struct section_64			*section;
 	void						*check;
+	uint32_t					nsects;
 
+	nsects = swap32_if(segment->nsects, file->endian);
 	section = (struct section_64 *)is_in_file(file, ((void *)segment \
 		+ sizeof(struct segment_command_64)), sizeof(*section));
-	size_sections = segment->nsects * sizeof(*section);
+	size_sections = nsects * sizeof(*section);
 	if (!section || !(check = is_in_file(file, section, size_sections)))
         return (put_error(file->filename, VALID_OBJECT));
 	i = 0;
-	while (i < segment->nsects)
+	while (i < nsects)
 	{
 		// ft_putendl("get_sections_indices while");
 		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
@@ -122,13 +130,13 @@ static t_ex_ret			init_file_64(t_bin_file *file)
                 return (put_error(file->filename, VALID_OBJECT));
 			if (get_sections_indices_64(file, segment, nb_sect) == FAILURE)
                 return (FAILURE);
-			nb_sect += segment->nsects;
+			nb_sect += swap32_if(segment->nsects, file->endian);
 		}
         i++;
-		if ((lc->cmdsize % 8) != 0)
-            return (put_error(file->filename, CMD_SIZE_ERR));
+		if ((swap32_if(lc->cmdsize, file->endian) % 8) != 0)
+            return (put_error(file->filename, VALID_OBJECT));
 		lc = (struct load_command *)is_in_file(file, (void *)lc \
-			+ lc->cmdsize, sizeof(*lc));
+			+ swap32_if(lc->cmdsize, file->endian), sizeof(*lc));
 		if (!lc)
             return (put_error(file->filename, VALID_OBJECT));
 	}

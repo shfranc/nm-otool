@@ -15,7 +15,7 @@
 # define TOGGLE_CASE		32
 # define BAD_STRING_INDEX	"bad string index"
 # define VALID_OBJECT		"The file was not recognized as a valid object file"
-# define CMD_SIZE_ERR		"malformed object (cmdsize not a multiple of 8)"
+// # define CMD_SIZE_ERR		"malformed object (cmdsize not a multiple of 8)"
 
 typedef enum				e_endian
 {
@@ -56,6 +56,7 @@ t_ex_ret 			sort_symbols(t_bin_file *file);
 */
 void        		*is_in_file(t_bin_file *file, void *current, size_t size);
 uint32_t			swap32_if(uint32_t n, t_endian endian);
+uint64_t			swap64_if(uint64_t n, t_endian endian);
 
 /*
 ** ERRORS HANDLING
