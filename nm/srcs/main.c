@@ -12,6 +12,7 @@ static t_ex_ret	ft_nm(char *filename, size_t size, void *ptr)
     if (magic_number == MH_MAGIC)
     {
 		// ft_putendl("MAGIC 32 bits");
+		ret = handle_32(MAGIC, filename, size, ptr);
 	}
     else if (magic_number == MH_MAGIC_64)
 	{
@@ -21,6 +22,7 @@ static t_ex_ret	ft_nm(char *filename, size_t size, void *ptr)
     else if (magic_number == MH_CIGAM)
     {
 		// ft_putendl("CIGAM 32 bits");
+		ret = handle_32(CIGAM, filename, size, ptr);
 	}
     else if (magic_number == MH_CIGAM_64)
     {

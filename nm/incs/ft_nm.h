@@ -44,9 +44,11 @@ typedef struct				s_bin_file
 	t_symbol				*symbols;
 }							t_bin_file;
 
+t_ex_ret	        handle_32(t_endian endian, char *filename, \
+						size_t size, void *ptr);
 t_ex_ret	        handle_64(t_endian endian, char *filename, \
 						size_t size, void *ptr);
-
+						
 char				get_type_char(uint8_t type, uint8_t sect, uint64_t value,
 						t_bin_file *file);
 t_ex_ret 			sort_symbols(t_bin_file *file);

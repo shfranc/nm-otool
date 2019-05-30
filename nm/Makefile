@@ -8,6 +8,7 @@ PATH_SRCS = srcs
 PATH_OBJS = objs
 
 SRCS = $(addprefix $(PATH_SRCS)/, main.c \
+	handle_32.c \
 	handle_64.c \
 	type.c \
 	sort.c \
