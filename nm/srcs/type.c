@@ -19,10 +19,9 @@ char		get_type_char(uint8_t type, uint8_t sect, uint64_t value, t_bin_file *file
 	uint8_t mask;
 	char type_char;
 
-	type_char = '?';
 	if (type & N_STAB)
-		type_char = '-';
-
+		return('-');
+	type_char = '?';
 	mask = type & N_TYPE;
 	if (mask == N_UNDF && (type & N_EXT))
 		type_char = 'U';
