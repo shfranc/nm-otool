@@ -31,7 +31,8 @@ static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 	char			*stringtable;
 	void			*check;
 
-	nlist = (struct nlist_64 *)(file->ptr + file->symtab_cmd->symoff);
+		ft_putendl("fill_symbols_table begin");
+	nlist = (struct nlist_64 *)(file->ptr + file->symtab_cmd->symoff); // check symtab
 	check = is_in_file(file, nlist, sizeof(*nlist) * file->symtab_cmd->nsyms);
 	stringtable = (char *)is_in_file(file, (file->ptr \
 		+ file->symtab_cmd->stroff), sizeof(*stringtable));
@@ -40,6 +41,7 @@ static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 	i = 0;
 	while (i < file->symtab_cmd->nsyms)
 	{
+		// ft_putendl("fill_symbols_table while");
 		file->symbols[i].value = nlist[i].n_value;
         file->symbols[i].name = (char *)is_in_file(file, stringtable \
 			+ nlist[i].n_un.n_strx, sizeof(*file->symbols[i].name));
@@ -49,6 +51,8 @@ static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 			nlist[i].n_sect, nlist[i].n_value, file);
         i++;
 	}
+		// ft_putendl("fill_symbols_table end");
+
 	return (SUCCESS);
 }
 
@@ -68,6 +72,7 @@ static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
 	i = 0;
 	while (i < segment->nsects)
 	{
+		// ft_putendl("get_sections_indices while");
 		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
 			file->text_index = i + nb_sect;
 		else if (ft_strcmp(section->sectname, SECT_DATA) == 0)
@@ -77,6 +82,7 @@ static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
 		section = (void *)section + sizeof(struct section_64);
 		i++;
 	}
+		// ft_putendl("get_sections_indices end");
     return (SUCCESS);
 }
 
@@ -98,8 +104,9 @@ static t_ex_ret			init_file_64(t_bin_file *file)
         return (put_error(file->filename, VALID_OBJECT));
 	i = 0;
 	nb_sect = 1;
-	while (i < header->ncmds)
+	while (i < swap32_if(header->ncmds, file->endian))
 	{
+		// ft_putendl("init_file while");
 		if (lc->cmd == LC_SYMTAB)
         {
 			file->symtab_cmd = (struct symtab_command *)is_in_file(file, lc, \
@@ -118,27 +125,32 @@ static t_ex_ret			init_file_64(t_bin_file *file)
 			nb_sect += segment->nsects;
 		}
         i++;
+		if ((lc->cmdsize % 8) != 0)
+            return (put_error(file->filename, CMD_SIZE_ERR));
 		lc = (struct load_command *)is_in_file(file, (void *)lc \
 			+ lc->cmdsize, sizeof(*lc));
 		if (!lc)
             return (put_error(file->filename, VALID_OBJECT));
 	}
+	// ft_putendl("init_file end");
     return (SUCCESS);
 }
 
-t_ex_ret	        handle_magic_64(char *filename, uint8_t magic_number, \
+t_ex_ret	        handle_magic_64(char *filename, t_endian endian, \
 						size_t size, void *ptr)
 {
 	t_bin_file		        file;
 
     ft_bzero(&file, sizeof(file));
     file.filename = filename;
-	file.magic_number = magic_number;
+	file.endian = endian;
 	file.ptr = ptr;
 	file.size = size;
 	file.end = ptr + size;
     if (init_file_64(&file) == FAILURE)
         return (FAILURE);
+	if (!file.symtab_cmd)
+		return (FAILURE);
     file.symbols = (t_symbol*)ft_memalloc(sizeof(t_symbol) \
 		* file.symtab_cmd->nsyms);
     if (!file.symbols)

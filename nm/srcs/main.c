@@ -11,25 +11,30 @@ static t_ex_ret	ft_nm(char *filename, size_t size, void *ptr)
 
     if (magic_number == MH_MAGIC)
     {
-		// printf("MAGIC 32 bits\n");
+		ft_putendl("MAGIC 32 bits");
 	}
     else if (magic_number == MH_MAGIC_64)
 	{
-		// printf("MAGIC 64 bits\n");
-		ret = handle_magic_64(filename, magic_number, size, ptr);
+		ft_putendl("MAGIC 64 bits");
+		ret = handle_magic_64(filename, MAGIC, size, ptr);
 	}
     else if (magic_number == MH_CIGAM)
     {
-		// printf("CIGAM 32 bits\n");
+		ft_putendl("CIGAM 32 bits");
 	}
     else if (magic_number == MH_CIGAM_64)
     {
-		// printf("CIGAM 64 bits\n");
+		ft_putendl("CIGAM 64 bits");
+		ret = handle_magic_64(filename, CIGAM, size, ptr);
 	}
-    else
-    {
-        // dprintf(2, "Wrong magic number\n");
-    }
+	else if (ft_strncmp(ptr, ARMAG, SARMAG) == 0)
+	{
+		ft_putendl(ARMAG);
+	}
+	else
+	{
+		ft_putendl("something else...");
+	}
 
     return (ret);
 }
