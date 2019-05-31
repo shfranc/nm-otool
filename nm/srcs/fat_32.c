@@ -7,7 +7,8 @@ static t_bool		is_archi_x86_64(cpu_type_t cpu_type)
 	return (FALSE);
 }
 
-static char    		*get_archi_name(cpu_type_t cpu_type)
+static char    		*get_archi_name(cpu_type_t cpu_type, \
+						cpu_subtype_t cpu_subtype)
 {
     if (cpu_type == CPU_TYPE_I386)
         return ("i386");
@@ -15,6 +16,12 @@ static char    		*get_archi_name(cpu_type_t cpu_type)
         return ("ppc");
     if (cpu_type == CPU_TYPE_POWERPC64)
         return ("ppc64");
+    if (cpu_type == CPU_TYPE_ARM64)
+        return ("arm64");
+    if (cpu_type == CPU_TYPE_ARM  && cpu_subtype == CPU_SUBTYPE_ARM_V7)
+        return ("armv7");
+    if (cpu_type == CPU_TYPE_ARM  && cpu_subtype == CPU_SUBTYPE_ARM_V7S)
+        return ("armv7s");
     return ("");
 }
 
@@ -40,12 +47,14 @@ static t_ex_ret		check_archi_x86_64(t_endian endian, uint32_t nb_arch, \
 t_ex_ret            handle_fat32(t_endian endian, char *filename, \
 						size_t size, void *ptr)
 {
+	t_bin_file			file;
 	struct fat_header	*header;
 	uint32_t			nb_arch;
 	struct fat_arch		*arch;
 	int					archi_x84_64;
 
-	(void)size;
+	file.ptr = ptr;
+	file.end = ptr + size;
 	archi_x84_64 = -1;
 	header = (struct fat_header*)ptr;
 	nb_arch = swap32_if(header->nfat_arch, endian);
@@ -62,7 +71,8 @@ t_ex_ret            handle_fat32(t_endian endian, char *filename, \
 			write(1, "\n", 1);
 			ft_putstr(filename);
 			ft_putstr(" (for architecture ");
-			ft_putstr(get_archi_name(swap32_if(arch->cputype, endian)));
+			ft_putstr(get_archi_name(swap32_if(arch->cputype, endian), \
+				swap32_if(arch->cpusubtype, endian)));
 			ft_putendl("):");
 			ft_nm(filename, swap32_if(arch->size, endian), ptr + swap32_if(arch->offset, endian));
 			arch++;
