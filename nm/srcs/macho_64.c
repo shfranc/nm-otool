@@ -107,7 +107,7 @@ static t_ex_ret			get_load_commands_64(t_bin_file *file, \
 	header = (struct mach_header_64 *)is_in_file(file, file->ptr, \
 		sizeof(*header));
     if (!header)
-        return (put_error(file->filename, TRUNC_OBJECT));
+        return (put_error(file->filename, VALID_OBJECT));
 	*ncmds = swap32_if(header->ncmds, file->endian);
 	*lc = (struct load_command *)is_in_file(file, file->ptr + sizeof(*header), \
 		sizeof(**lc));
