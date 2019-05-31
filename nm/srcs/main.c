@@ -1,9 +1,9 @@
 #include "ft_nm.h"
 
-static t_ex_ret	ft_nm(char *filename, size_t size, void *ptr)
+t_ex_ret	ft_nm(char *filename, uint64_t size, void *ptr)
 {
     t_ex_ret        ret;
-	uint32_t				magic_number;
+	uint32_t		magic_number;
 
 	magic_number = *(uint32_t *)ptr;
     ret = FAILURE;
@@ -33,10 +33,26 @@ static t_ex_ret	ft_nm(char *filename, size_t size, void *ptr)
 	{
 		// ft_putendl(ARMAG);
 	}
-	else
+	else if (magic_number == FAT_MAGIC)
 	{
-		// ft_putendl("something else...");
+		ft_putendl("FAT 32 MAGIC");
+		ret = handle_fat32(MAGIC, filename, size, ptr);
 	}
+	else if (magic_number == FAT_CIGAM)
+	{
+		ft_putendl("FAT 32 CIGAM");
+		ret = handle_fat32(CIGAM, filename, size, ptr);
+	}
+	else if (magic_number == FAT_MAGIC_64)
+	{
+		ft_putendl("FAT 64 MAGIC");
+	}
+	else if (magic_number == FAT_CIGAM_64)
+	{
+		ft_putendl("FAT 64 CIGAM");
+	}
+	// else
+		// ft_putendl("something else...");
 
     return (ret);
 }
@@ -71,7 +87,7 @@ int		main(int ac, char **av)
 	if ((ptr = mmap(ptr, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
 		return (put_error("", VALID_OBJECT));
 
-	ret = ft_nm(av[1], buf.st_size, ptr);
+	ret = ft_nm(av[1], (uint64_t)buf.st_size, ptr);
 
 	if (munmap(ptr, buf.st_size) < 0)
 		return (put_error("", UNMAP_ERROR));
