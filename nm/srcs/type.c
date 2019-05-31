@@ -27,8 +27,8 @@ char		get_type_char(uint8_t type, uint8_t sect, uint64_t value, t_bin_file *file
 		type_char = 'U';
 	if (mask == N_ABS)
 		type_char = 'A';
-	if (mask == N_PBUD)
-		type_char = 'P';
+	// if (mask == N_PBUD)
+	// 	type_char = 'P';
 	if (mask == N_INDR)
 		type_char = 'I';
 	if (mask == N_SECT)

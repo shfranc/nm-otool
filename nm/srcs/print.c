@@ -19,6 +19,9 @@ void				print_name(char *name)
 	size_t	len;
 
 	len = len_name(name);
-	write(1, name, len);
-	write(1, "\n", 1);
+	if (len)
+	{
+    	write(1, " ", 1);
+		write(1, name, len);
+	}
 }

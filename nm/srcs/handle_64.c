@@ -14,14 +14,19 @@ static void			print_symbols_table_64(t_bin_file *file)
 			i++;
 			continue ;
 		}
-        if (file->symbols[i].type != 'U' && file->symbols[i].type != 'u')
+        if (file->symbols[i].type != 'U' && file->symbols[i].type != 'u' \
+			&& file->symbols[i].type != 'I')
+		{
 		    ft_puthexa_uint64(file->symbols[i].value);
+		}
         else
             write(1, "                ", 16);
         write(1, " ", 1);
 		ft_putchar(file->symbols[i].type);
-        write(1, " ", 1);
 		print_name(file->symbols[i].name);
+		if (file->symbols[i].type == 'I')
+			ft_putstr(INDIRECT_STRING);
+		write(1, "\n", 1);
         i++;
     }
 }

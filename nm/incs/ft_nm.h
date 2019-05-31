@@ -14,6 +14,7 @@
 
 # define TOGGLE_CASE		32
 # define BAD_STRING_INDEX	"bad string index"
+# define INDIRECT_STRING	" (indirect for ?)"
 # define UNMAP_ERROR		"unmap: error"
 # define VALID_OBJECT		"The file was not recognized as a valid object file"
 # define TRUNC_OBJECT		"Truncated or malformed object"
