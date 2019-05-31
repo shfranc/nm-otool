@@ -35,24 +35,24 @@ t_ex_ret	ft_nm(char *filename, uint64_t size, void *ptr)
 	}
 	else if (magic_number == FAT_MAGIC)
 	{
-		ft_putendl("FAT 32 MAGIC");
+		// ft_putendl("FAT 32 MAGIC");
 		ret = handle_fat32(MAGIC, filename, size, ptr);
 	}
 	else if (magic_number == FAT_CIGAM)
 	{
-		ft_putendl("FAT 32 CIGAM");
+		// ft_putendl("FAT 32 CIGAM");
 		ret = handle_fat32(CIGAM, filename, size, ptr);
 	}
 	else if (magic_number == FAT_MAGIC_64)
 	{
-		ft_putendl("FAT 64 MAGIC");
+		// ft_putendl("FAT 64 MAGIC");
 	}
 	else if (magic_number == FAT_CIGAM_64)
 	{
-		ft_putendl("FAT 64 CIGAM");
+		// ft_putendl("FAT 64 CIGAM");
 	}
-	// else
-		// ft_putendl("something else...");
+	else
+		ft_putendl("something else...");
 
     return (ret);
 }
