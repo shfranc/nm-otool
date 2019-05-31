@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FT_NM="../ft_nm"
+FT_NM="/Users/sarahfranc/Documents/sarah/nm-otool/nm/ft_nm"
 
 for file in $(ls -1 $1)
 do

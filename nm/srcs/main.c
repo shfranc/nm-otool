@@ -12,6 +12,7 @@ static t_ex_ret	ft_nm(char *filename, size_t size, void *ptr)
     if (magic_number == MH_MAGIC)
     {
 		// ft_putendl("MAGIC 32 bits");
+		ret = handle_32(MAGIC, filename, size, ptr);
 	}
     else if (magic_number == MH_MAGIC_64)
 	{
@@ -21,6 +22,7 @@ static t_ex_ret	ft_nm(char *filename, size_t size, void *ptr)
     else if (magic_number == MH_CIGAM)
     {
 		// ft_putendl("CIGAM 32 bits");
+		ret = handle_32(CIGAM, filename, size, ptr);
 	}
     else if (magic_number == MH_CIGAM_64)
     {
@@ -67,18 +69,12 @@ int		main(int ac, char **av)
 	}
 
 	if ((ptr = mmap(ptr, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
-	{
-		fprintf(stderr, "mmap: error\n");
-		return (EXIT_FAILURE);
-	}
+		return (put_error("", VALID_OBJECT));
 
 	ret = ft_nm(av[1], buf.st_size, ptr);
 
 	if (munmap(ptr, buf.st_size) < 0)
-	{
-		fprintf(stderr, "munmap: error\n");
-		return (EXIT_FAILURE);
-	}
+		return (put_error("", UNMAP_ERROR));
 
     //close !!
 

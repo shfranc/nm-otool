@@ -14,8 +14,10 @@
 
 # define TOGGLE_CASE		32
 # define BAD_STRING_INDEX	"bad string index"
+# define INDIRECT_STRING	" (indirect for ?)"
+# define UNMAP_ERROR		"unmap: error"
 # define VALID_OBJECT		"The file was not recognized as a valid object file"
-// # define CMD_SIZE_ERR		"malformed object (cmdsize not a multiple of 8)"
+# define TRUNC_OBJECT		"Truncated or malformed object"
 
 typedef enum				e_endian
 {
@@ -44,12 +46,15 @@ typedef struct				s_bin_file
 	t_symbol				*symbols;
 }							t_bin_file;
 
+t_ex_ret	        handle_32(t_endian endian, char *filename, \
+						size_t size, void *ptr);
 t_ex_ret	        handle_64(t_endian endian, char *filename, \
 						size_t size, void *ptr);
-
+						
 char				get_type_char(uint8_t type, uint8_t sect, uint64_t value,
 						t_bin_file *file);
 t_ex_ret 			sort_symbols(t_bin_file *file);
+void				print_name(char *name);
 
 /*
 ** CHECKS
