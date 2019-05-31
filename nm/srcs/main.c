@@ -69,18 +69,12 @@ int		main(int ac, char **av)
 	}
 
 	if ((ptr = mmap(ptr, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
-	{
-		fprintf(stderr, "mmap: error\n");
-		return (EXIT_FAILURE);
-	}
+		return (put_error("", VALID_OBJECT));
 
 	ret = ft_nm(av[1], buf.st_size, ptr);
 
 	if (munmap(ptr, buf.st_size) < 0)
-	{
-		fprintf(stderr, "munmap: error\n");
-		return (EXIT_FAILURE);
-	}
+		return (put_error("", UNMAP_ERROR));
 
     //close !!
 

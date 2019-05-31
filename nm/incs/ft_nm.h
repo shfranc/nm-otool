@@ -14,8 +14,9 @@
 
 # define TOGGLE_CASE		32
 # define BAD_STRING_INDEX	"bad string index"
+# define UNMAP_ERROR		"unmap: error"
 # define VALID_OBJECT		"The file was not recognized as a valid object file"
-// # define CMD_SIZE_ERR		"malformed object (cmdsize not a multiple of 8)"
+# define TRUNC_OBJECT		"Truncated or malformed object"
 
 typedef enum				e_endian
 {
