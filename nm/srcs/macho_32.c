@@ -14,8 +14,8 @@ static void			print_symbols_table_32(t_bin_file *file)
 			i++;
 			continue ;
 		}
-        if (file->symbols[i].type != 'U' && file->symbols[i].type != 'u' \
-			&& file->symbols[i].type != 'I')
+        if (file->symbols[i].type != 'U' && file->symbols[i].type != 'u')
+			// && file->symbols[i].type != 'I')
 		{
 		    ft_puthexa_uint32((uint32_t)file->symbols[i].value);
 		}
@@ -24,8 +24,8 @@ static void			print_symbols_table_32(t_bin_file *file)
         write(1, " ", 1);
 		ft_putchar(file->symbols[i].type);
 		print_name(file->symbols[i].name);
-		if (file->symbols[i].type == 'I')
-			ft_putstr(INDIRECT_STRING);
+		// if (file->symbols[i].type == 'I')
+		// 	ft_putstr(INDIRECT_STRING);
 		write(1, "\n", 1);
         i++;
     }
@@ -179,7 +179,6 @@ t_ex_ret	        handle_32(t_endian endian, char *filename, \
     file.filename = filename;
 	file.endian = endian;
 	file.ptr = ptr;
-	file.size = size;
 	file.end = ptr + size;
     if (init_file_32(&file) == FAILURE)
         return (FAILURE);

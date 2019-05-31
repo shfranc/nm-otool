@@ -37,7 +37,6 @@ typedef struct				s_bin_file
 	char					*filename;
 	void					*ptr;
 	void					*end;
-	size_t					size;
 	t_endian				endian;
 	uint8_t					text_index;
 	uint8_t					data_index;
