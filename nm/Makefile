@@ -10,6 +10,7 @@ PATH_OBJS = objs
 SRCS = $(addprefix $(PATH_SRCS)/, main.c \
 	handle_32.c \
 	handle_64.c \
+	print.c \
 	type.c \
 	sort.c \
 	check.c \

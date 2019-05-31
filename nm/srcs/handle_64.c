@@ -21,7 +21,7 @@ static void			print_symbols_table_64(t_bin_file *file)
         write(1, " ", 1);
 		ft_putchar(file->symbols[i].type);
         write(1, " ", 1);
-		ft_putendl(file->symbols[i].name);
+		print_name(file->symbols[i].name);
         i++;
     }
 }

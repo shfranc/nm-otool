@@ -52,6 +52,7 @@ t_ex_ret	        handle_64(t_endian endian, char *filename, \
 char				get_type_char(uint8_t type, uint8_t sect, uint64_t value,
 						t_bin_file *file);
 t_ex_ret 			sort_symbols(t_bin_file *file);
+void				print_name(char *name);
 
 /*
 ** CHECKS
