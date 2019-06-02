@@ -5,7 +5,7 @@ RED="\033[1;31m"
 YELLOW="\033[1;33m"
 DEF="\033[0m"
 
-nm_bin="/Users/sfranc/Documents/42/nm-otool/nm/ft_nm"
+nm_bin="/Users/sarahfranc/Documents/sarah/nm-otool/nm/ft_nm"
 
 printf "\n%.-78s $YELLOW%s   %s$DEF\n" "" "OUTPUT" "RETURN"
 

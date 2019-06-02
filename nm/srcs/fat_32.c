@@ -31,7 +31,7 @@ static t_ex_ret		check_archi_x86_64(t_bin_file *file, uint32_t nb_arch, \
 	uint32_t		i;
 	void			*check;
 
-	check = is_in_file(file, arch, sizeof(*arch) * nb_arch);
+	check = is_in_file(file, arch, sizeof(struct fat_arch) * nb_arch);
 	if (!check)
 		return (put_error(file->filename, TRUNC_OBJECT));
 	i = 0;
@@ -73,6 +73,7 @@ t_ex_ret            handle_fat32(t_endian endian, char *filename, \
         return (put_error(file.filename, VALID_OBJECT));
 	
 	nb_arch = swap32_if(header->nfat_arch, file.endian);
+	ft_putnbr_endl(nb_arch);
 	arch = ptr + sizeof(struct fat_header);
 	if (check_archi_x86_64(&file, nb_arch, arch, &archi_x84_64) == FAILURE)
 		return (FAILURE);
