@@ -19,8 +19,8 @@ t_ex_ret	loop_through_archive(t_bin_file *file, struct ar_hdr *object_header)
 		object_name = (char*)(object_header + 1);
 		object_ptr = object_name + ft_padding_ar_mac(object_header->ar_name);
 		object_size = ft_atoi(object_header->ar_size);
-		// if (!is_in_file(file, object_ptr, object_size))
-			// return (put_error(object_name, TRUNC_OBJECT));
+		if (!is_in_file(file, object_ptr, object_size - ft_padding_ar_mac(object_header->ar_name)))
+			return (put_error(object_name, TRUNC_OBJECT));
 		if (ft_nm(file->filename, object_name, object_size, object_ptr))
 			return (FAILURE);
 		object_header = (struct ar_hdr*)is_in_file(file, object_name \
