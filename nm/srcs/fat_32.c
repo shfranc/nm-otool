@@ -73,7 +73,6 @@ t_ex_ret            handle_fat32(t_endian endian, char *filename, \
         return (put_error(file.filename, VALID_OBJECT));
 	
 	nb_arch = swap32_if(header->nfat_arch, file.endian);
-	ft_putnbr_endl(nb_arch);
 	arch = ptr + sizeof(struct fat_header);
 	if (check_archi_x86_64(&file, nb_arch, arch, &archi_x84_64) == FAILURE)
 		return (FAILURE);
