@@ -9,6 +9,7 @@
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
 # include <mach-o/fat.h>
+# include <mach-o/ranlib.h>
 # include <sys/stat.h>
 # include <ar.h>
 # include <errno.h>
@@ -24,6 +25,7 @@
 # define TRUNC_OBJECT		"Truncated or malformed object"
 
 extern int					g_flags;
+extern t_bool				g_multifile;
 
 typedef enum				e_endian
 {
@@ -51,14 +53,17 @@ typedef struct				s_bin_file
 	t_symbol				*symbols;
 }							t_bin_file;
 
-int					get_options(int *argc, char ***argv);
-t_ex_ret			ft_nm(char *filename, uint64_t size, void *ptr);
+t_ex_ret			ft_nm(char *archive_name, char *filename, uint64_t size, \
+						void *ptr);
 t_ex_ret	        handle_32(t_endian endian, char *filename, \
 						size_t size, void *ptr);
 t_ex_ret	        handle_64(t_endian endian, char *filename, \
 						size_t size, void *ptr);
 t_ex_ret            handle_fat32(t_endian endian, char *filename, \
 						size_t size, void *ptr);
+t_ex_ret     		handle_archive(char *filename, size_t size, void *ptr);
+
+int					get_options(int *argc, char ***argv);
 char				get_type_char(uint8_t type, uint8_t sect, uint64_t value,
 						t_bin_file *file);
 t_ex_ret 			sort_symbols(t_bin_file *file);

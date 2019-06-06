@@ -88,7 +88,7 @@ t_ex_ret            handle_fat32(t_endian endian, char *filename, \
 			ft_putstr(get_archi_name(swap32_if(arch->cputype, file.endian), \
 				swap32_if(arch->cpusubtype, file.endian)));
 			ft_putendl("):");
-			if (ft_nm(filename, swap32_if(arch->size, file.endian), file.ptr + swap32_if(arch->offset, file.endian)) == FAILURE)
+			if (ft_nm(NULL, filename, swap32_if(arch->size, file.endian), file.ptr + swap32_if(arch->offset, file.endian)) == FAILURE)
 			{
 				return (FAILURE);
 			}
@@ -97,7 +97,7 @@ t_ex_ret            handle_fat32(t_endian endian, char *filename, \
 	}
 	else
 	{
-		if (ft_nm(filename, swap32_if(arch[archi_x84_64].size, file.endian), \
+		if (ft_nm(NULL, filename, swap32_if(arch[archi_x84_64].size, file.endian), \
 			file.ptr + swap32_if(arch[archi_x84_64].offset, file.endian)) == FAILURE)
 		{
 			return (FAILURE);

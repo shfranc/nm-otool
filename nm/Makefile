@@ -12,6 +12,7 @@ SRCS = $(addprefix $(PATH_SRCS)/, main.c \
 	macho_32.c \
 	macho_64.c \
 	fat_32.c \
+	archive.c \
 	print.c \
 	type.c \
 	sort.c \

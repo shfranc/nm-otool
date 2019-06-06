@@ -1,10 +1,30 @@
 #include "ft_nm.h"
 
-t_ex_ret	ft_nm(char *filename, uint64_t size, void *ptr)
+static void			put_filename(char *filename, char *archive_name)
+{
+    if (!archive_name && g_multifile == TRUE)
+	{
+		ft_putendl("");
+		ft_putstr(filename);
+		ft_putendl(":");
+	}
+    else if (archive_name)
+	{
+		ft_putendl("");
+		ft_putstr(archive_name);
+		ft_putstr("(");
+		ft_putstr(filename);
+		ft_putendl("):");
+	}
+
+}
+
+t_ex_ret	ft_nm(char *archive_name, char *filename, uint64_t size, void *ptr)
 {
     t_ex_ret        ret;
 	uint32_t		magic_number;
 
+	put_filename(filename, archive_name);
 	magic_number = *(uint32_t *)ptr;
     ret = FAILURE;
 	// printf("magic number: %x\n", magic_number);
@@ -29,9 +49,11 @@ t_ex_ret	ft_nm(char *filename, uint64_t size, void *ptr)
 		// ft_putendl("CIGAM 64 bits");
 		ret = handle_64(CIGAM, filename, size, ptr);
 	}
-	else if (ft_strncmp(ptr, ARMAG, SARMAG) == 0)
+	else if (ft_strncmp((char *)ptr, ARMAG, SARMAG) == 0)
 	{
 		// ft_putendl(ARMAG);
+		ret = handle_archive(filename, size, ptr);
+
 	}
 	else if (magic_number == FAT_MAGIC)
 	{
