@@ -8,16 +8,22 @@
 # include <sys/mman.h>
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
+# include <mach-o/fat.h>
 # include <sys/stat.h>
 # include <ar.h>
+# include <errno.h>
 
-
+# define OPTIONS			"gjnpruU"
 # define TOGGLE_CASE		32
+# define NO_FILE			"No such file or directory."
+# define PERM_DENIED		"Permission denied."
 # define BAD_STRING_INDEX	"bad string index"
 # define INDIRECT_STRING	" (indirect for ?)"
 # define UNMAP_ERROR		"unmap: error"
 # define VALID_OBJECT		"The file was not recognized as a valid object file"
 # define TRUNC_OBJECT		"Truncated or malformed object"
+
+extern int					g_flags;
 
 typedef enum				e_endian
 {
@@ -37,7 +43,6 @@ typedef struct				s_bin_file
 	char					*filename;
 	void					*ptr;
 	void					*end;
-	size_t					size;
 	t_endian				endian;
 	uint8_t					text_index;
 	uint8_t					data_index;
@@ -46,11 +51,14 @@ typedef struct				s_bin_file
 	t_symbol				*symbols;
 }							t_bin_file;
 
+int					get_options(int *argc, char ***argv);
+t_ex_ret			ft_nm(char *filename, uint64_t size, void *ptr);
 t_ex_ret	        handle_32(t_endian endian, char *filename, \
 						size_t size, void *ptr);
 t_ex_ret	        handle_64(t_endian endian, char *filename, \
 						size_t size, void *ptr);
-						
+t_ex_ret            handle_fat32(t_endian endian, char *filename, \
+						size_t size, void *ptr);
 char				get_type_char(uint8_t type, uint8_t sect, uint64_t value,
 						t_bin_file *file);
 t_ex_ret 			sort_symbols(t_bin_file *file);
@@ -66,6 +74,8 @@ uint64_t			swap64_if(uint64_t n, t_endian endian);
 /*
 ** ERRORS HANDLING
 */
+t_ex_ret			put_usage(void);
+t_ex_ret			illegal_option(void);
 t_ex_ret    		put_error(char *filename, char *message);
 
 #endif

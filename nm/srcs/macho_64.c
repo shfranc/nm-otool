@@ -14,8 +14,8 @@ static void			print_symbols_table_64(t_bin_file *file)
 			i++;
 			continue ;
 		}
-        if (file->symbols[i].type != 'U' && file->symbols[i].type != 'u' \
-			&& file->symbols[i].type != 'I')
+        if (file->symbols[i].type != 'U' && file->symbols[i].type != 'u')
+			// && file->symbols[i].type != 'I')
 		{
 		    ft_puthexa_uint64(file->symbols[i].value);
 		}
@@ -24,8 +24,8 @@ static void			print_symbols_table_64(t_bin_file *file)
         write(1, " ", 1);
 		ft_putchar(file->symbols[i].type);
 		print_name(file->symbols[i].name);
-		if (file->symbols[i].type == 'I')
-			ft_putstr(INDIRECT_STRING);
+		// if (file->symbols[i].type == 'I')
+			// ft_putstr(INDIRECT_STRING);
 		write(1, "\n", 1);
         i++;
     }
@@ -41,7 +41,7 @@ static void			fill_one_symbol_64(t_bin_file *file, char *stringtable, \
 	if (!symbol->name)
 		symbol->name = BAD_STRING_INDEX;
 	symbol->type = get_type_char(nlist->n_type, \
-		nlist->n_sect, nlist->n_value, file);
+		nlist->n_sect, symbol->value, file);
 }
 
 static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
@@ -57,7 +57,7 @@ static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 		+ swap32_if(file->symtab_cmd->symoff, file->endian));
 	check = is_in_file(file, nlist, sizeof(*nlist) * nsyms);
 	stringtable = (char *)is_in_file(file, (file->ptr \
-		+ file->symtab_cmd->stroff), sizeof(*stringtable));
+		+ swap32_if(file->symtab_cmd->stroff, file->endian)), sizeof(*stringtable));
 	if (!check || !stringtable)
         return (put_error(file->filename, TRUNC_OBJECT));
 	i = 0;
@@ -120,15 +120,17 @@ static t_ex_ret			get_info_from_load_command_64(t_bin_file *file, \
 							struct load_command *lc, uint8_t *nb_sect)
 {
 	struct segment_command_64	    *segment;
+	uint32_t					lc_cmd;
 
-	if (lc->cmd == LC_SYMTAB)
+	lc_cmd = swap32_if(lc->cmd, file->endian);
+	if (lc_cmd == LC_SYMTAB)
 	{
 		file->symtab_cmd = (struct symtab_command *)is_in_file(file, lc, \
 			sizeof(*(file->symtab_cmd)));
 		if (!file->symtab_cmd)
 			return (put_error(file->filename, TRUNC_OBJECT));
 	}
-	else if (lc->cmd == LC_SEGMENT_64)
+	else if (lc_cmd == LC_SEGMENT_64)
 	{
 		segment = (struct segment_command_64 *)is_in_file(file, lc, \
 			sizeof(*segment));
@@ -177,7 +179,6 @@ t_ex_ret	        handle_64(t_endian endian, char *filename, \
     file.filename = filename;
 	file.endian = endian;
 	file.ptr = ptr;
-	file.size = size;
 	file.end = ptr + size;
     if (init_file_64(&file) == FAILURE)
         return (FAILURE);
