@@ -22,9 +22,7 @@ static t_ex_ret		loop_through_archive(t_bin_file *file,
 		object_size = ft_atoi(object_header->ar_size);
 		if (!is_in_file(file, object_ptr, object_size \
 			- padding_ar_mac(object_header->ar_name)))
-		{
 			return (put_error(object_name, TRUNC_OBJECT));
-		}
 		if (ft_nm(file->filename, object_name, object_size, object_ptr))
 			return (FAILURE);
 		object_header = (struct ar_hdr*)is_in_file(file, object_name \
@@ -77,9 +75,7 @@ t_ex_ret			handle_archive(char *filename, size_t size, void *ptr)
 		return (put_error(filename, VALID_OBJECT));
 	if (check_valid_archive(&file, header, &symtab_size, &string_table_size) \
 		== FAILURE)
-	{
 		return (FAILURE);
-	}
 	object_header = (struct ar_hdr*)is_in_file(&file, (void*)(header + 1) \
 		+ padding_ar_mac(header->ar_name) + sizeof(uint32_t) \
 		+ symtab_size + sizeof(uint32_t) \

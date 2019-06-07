@@ -7,9 +7,7 @@ void		*is_in_file(t_bin_file *file, void *dest, size_t size)
 	max = dest + size;
 	if (dest >= file->ptr && dest < file->end \
 		&& max > file->ptr && max <= file->end)
-	{
 		return (dest);
-	}
 	return (NULL);
 }
 

@@ -51,6 +51,16 @@ typedef struct				s_bin_file
 	t_symbol				*symbols;
 }							t_bin_file;
 
+typedef struct				s_sort
+{
+	int						start1;
+	int						end1;
+	int						end2;
+	int						cpt1;
+	int						cpt2;
+}							t_sort;
+
+
 t_ex_ret					ft_nm(char *archive_name, char *filename, \
 								uint64_t size, void *ptr);
 t_ex_ret					handle_32(t_endian endian, char *filename, \

@@ -86,9 +86,7 @@ t_ex_ret			handle_fat32(t_endian endian, char *filename, \
 			ft_putendl("):");
 			if (ft_nm(NULL, file.filename, swap32_if(arch->size, file.endian), \
 				file.ptr + swap32_if(arch->offset, file.endian)) == FAILURE)
-			{
 				return (FAILURE);
-			}
 			arch++;
 		}
 	}
@@ -97,9 +95,7 @@ t_ex_ret			handle_fat32(t_endian endian, char *filename, \
 		if (ft_nm(NULL, file.filename, swap32_if(arch[archi_x84_64].size, \
 			file.endian), file.ptr + swap32_if(arch[archi_x84_64].offset, \
 			file.endian)) == FAILURE)
-		{
 			return (FAILURE);
-		}
 	}
 	return (SUCCESS);
 }
