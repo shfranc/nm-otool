@@ -74,7 +74,7 @@ t_ex_ret	ft_nm(char *archive_name, char *filename, uint64_t size, void *ptr)
 		// ft_putendl("FAT 64 CIGAM");
 	}
 	else
-		ft_putendl("something else...");
+		return (put_error(filename, VALID_OBJECT));
 
 	return (ret);
 }
