@@ -7,22 +7,22 @@ static t_bool		is_archi_x86_64(cpu_type_t cpu_type)
 	return (FALSE);
 }
 
-static char    		*get_archi_name(cpu_type_t cpu_type, \
+static char			*get_archi_name(cpu_type_t cpu_type, \
 						cpu_subtype_t cpu_subtype)
 {
-    if (cpu_type == CPU_TYPE_I386)
-        return ("i386");
-    if (cpu_type == CPU_TYPE_POWERPC)
-        return ("ppc");
-    if (cpu_type == CPU_TYPE_POWERPC64)
-        return ("ppc64");
-    if (cpu_type == CPU_TYPE_ARM64)
-        return ("arm64");
-    if (cpu_type == CPU_TYPE_ARM  && cpu_subtype == CPU_SUBTYPE_ARM_V7)
-        return ("armv7");
-    if (cpu_type == CPU_TYPE_ARM  && cpu_subtype == CPU_SUBTYPE_ARM_V7S)
-        return ("armv7s");
-    return ("");
+	if (cpu_type == CPU_TYPE_I386)
+		return ("i386");
+	if (cpu_type == CPU_TYPE_POWERPC)
+		return ("ppc");
+	if (cpu_type == CPU_TYPE_POWERPC64)
+		return ("ppc64");
+	if (cpu_type == CPU_TYPE_ARM64)
+		return ("arm64");
+	if (cpu_type == CPU_TYPE_ARM  && cpu_subtype == CPU_SUBTYPE_ARM_V7)
+		return ("armv7");
+	if (cpu_type == CPU_TYPE_ARM  && cpu_subtype == CPU_SUBTYPE_ARM_V7S)
+		return ("armv7s");
+	return ("");
 }
 
 static t_ex_ret		check_archi_x86_64(t_bin_file *file, uint32_t nb_arch, \
@@ -35,8 +35,8 @@ static t_ex_ret		check_archi_x86_64(t_bin_file *file, uint32_t nb_arch, \
 	if (!check)
 		return (put_error(file->filename, TRUNC_OBJECT));
 	i = 0;
-    while (i < nb_arch)
-    {
+	while (i < nb_arch)
+	{
 		check = is_in_file(file, file->ptr + swap32_if(arch->offset, file->endian), swap32_if(arch->size, file->endian));
 		if (!check)
 				return (put_error(file->filename, TRUNC_OBJECT));
@@ -46,12 +46,12 @@ static t_ex_ret		check_archi_x86_64(t_bin_file *file, uint32_t nb_arch, \
 			return (SUCCESS);
 		}
 		i++;
-        arch++;
-    }
+		arch++;
+	}
 	return (SUCCESS);
 }
 
-t_ex_ret            handle_fat32(t_endian endian, char *filename, \
+t_ex_ret			handle_fat32(t_endian endian, char *filename, \
 						size_t size, void *ptr)
 {
 	t_bin_file			file;
@@ -60,8 +60,8 @@ t_ex_ret            handle_fat32(t_endian endian, char *filename, \
 	struct fat_arch		*arch;
 	int					archi_x84_64;
 
-    ft_bzero(&file, sizeof(file));
-    file.filename = filename;
+	ft_bzero(&file, sizeof(file));
+	file.filename = filename;
 	file.endian = endian;
 	file.ptr = ptr;
 	file.end = ptr + size;
@@ -70,7 +70,7 @@ t_ex_ret            handle_fat32(t_endian endian, char *filename, \
 
 	header = (struct fat_header*)is_in_file(&file, ptr, sizeof(*header));
 	if (!header)
-        return (put_error(file.filename, VALID_OBJECT));
+		return (put_error(file.filename, VALID_OBJECT));
 	
 	nb_arch = swap32_if(header->nfat_arch, file.endian);
 	arch = ptr + sizeof(struct fat_header);
@@ -103,5 +103,5 @@ t_ex_ret            handle_fat32(t_endian endian, char *filename, \
 		}
 	}
 	
-    return (SUCCESS);
+	return (SUCCESS);
 }

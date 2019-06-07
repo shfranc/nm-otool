@@ -21,7 +21,7 @@ void				print_name(char *name)
 	len = len_name(name);
 	if (len)
 	{
-    	write(1, " ", 1);
+		write(1, " ", 1);
 		write(1, name, len);
 	}
 }

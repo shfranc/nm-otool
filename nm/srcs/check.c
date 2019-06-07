@@ -1,16 +1,16 @@
 #include "ft_nm.h"
 
-void        *is_in_file(t_bin_file *file, void *dest, size_t size)
+void		*is_in_file(t_bin_file *file, void *dest, size_t size)
 {
-    void       *max;
+	void		*max;
 
-    max = dest + size;
-    if (dest >= file->ptr && dest < file->end \
+	max = dest + size;
+	if (dest >= file->ptr && dest < file->end \
 		&& max > file->ptr && max <= file->end)
 	{
-        return (dest);
+		return (dest);
 	}
-    return (NULL);
+	return (NULL);
 }
 
 uint32_t	swap32_if(uint32_t n, t_endian endian)

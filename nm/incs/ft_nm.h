@@ -36,7 +36,7 @@ typedef enum				e_endian
 typedef	struct				s_symbol
 {
 	uint64_t				value;
-    char                    *name;
+	char					*name;
 	char					type;
 }							t_symbol;
 
@@ -55,13 +55,13 @@ typedef struct				s_bin_file
 
 t_ex_ret			ft_nm(char *archive_name, char *filename, uint64_t size, \
 						void *ptr);
-t_ex_ret	        handle_32(t_endian endian, char *filename, \
+t_ex_ret			handle_32(t_endian endian, char *filename, \
 						size_t size, void *ptr);
-t_ex_ret	        handle_64(t_endian endian, char *filename, \
+t_ex_ret			handle_64(t_endian endian, char *filename, \
 						size_t size, void *ptr);
-t_ex_ret            handle_fat32(t_endian endian, char *filename, \
+t_ex_ret			handle_fat32(t_endian endian, char *filename, \
 						size_t size, void *ptr);
-t_ex_ret     		handle_archive(char *filename, size_t size, void *ptr);
+t_ex_ret	 		handle_archive(char *filename, size_t size, void *ptr);
 
 int					get_options(int *argc, char ***argv);
 char				get_type_char(uint8_t type, uint8_t sect, uint64_t value,
@@ -72,7 +72,7 @@ void				print_name(char *name);
 /*
 ** CHECKS
 */
-void        		*is_in_file(t_bin_file *file, void *current, size_t size);
+void				*is_in_file(t_bin_file *file, void *current, size_t size);
 uint32_t			swap32_if(uint32_t n, t_endian endian);
 uint64_t			swap64_if(uint64_t n, t_endian endian);
 
@@ -81,6 +81,6 @@ uint64_t			swap64_if(uint64_t n, t_endian endian);
 */
 t_ex_ret			put_usage(void);
 t_ex_ret			illegal_option(void);
-t_ex_ret    		put_error(char *filename, char *message);
+t_ex_ret			put_error(char *filename, char *message);
 
 #endif
