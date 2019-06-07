@@ -1,6 +1,6 @@
 #include "ft_nm.h"
 
-static void			print_symbols_table_64(t_bin_file *file)
+static void				print_symbols_table_64(t_bin_file *file)
 {
 	size_t			i;
 	uint32_t		nsyms;
@@ -15,24 +15,19 @@ static void			print_symbols_table_64(t_bin_file *file)
 			continue ;
 		}
 		if (file->symbols[i].type != 'U' && file->symbols[i].type != 'u')
-			// && file->symbols[i].type != 'I')
-		{
 			ft_puthexa_uint64(file->symbols[i].value);
-		}
 		else
 			write(1, "                ", 16);
 		write(1, " ", 1);
 		ft_putchar(file->symbols[i].type);
 		print_name(file->symbols[i].name);
-		// if (file->symbols[i].type == 'I')
-			// ft_putstr(INDIRECT_STRING);
 		write(1, "\n", 1);
 		i++;
 	}
 }
 
-static void			fill_one_symbol_64(t_bin_file *file, char *stringtable, \
-						t_symbol *symbol, struct nlist_64 *nlist)
+static void				fill_one_symbol_64(t_bin_file *file, char *stringtable,\
+							t_symbol *symbol, struct nlist_64 *nlist)
 {
 	symbol->value = swap64_if(nlist->n_value, file->endian);
 	symbol->name = (char *)is_in_file(file, \
@@ -44,7 +39,7 @@ static void			fill_one_symbol_64(t_bin_file *file, char *stringtable, \
 		nlist->n_sect, symbol->value, file);
 }
 
-static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
+static t_ex_ret			fill_symbols_table_64(t_bin_file *file)
 {
 	size_t			i;
 	struct nlist_64	*nlist;
@@ -57,7 +52,8 @@ static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 		+ swap32_if(file->symtab_cmd->symoff, file->endian));
 	check = is_in_file(file, nlist, sizeof(*nlist) * nsyms);
 	stringtable = (char *)is_in_file(file, (file->ptr \
-		+ swap32_if(file->symtab_cmd->stroff, file->endian)), sizeof(*stringtable));
+		+ swap32_if(file->symtab_cmd->stroff, file->endian)), \
+		sizeof(*stringtable));
 	if (!check || !stringtable)
 		return (put_error(file->filename, TRUNC_OBJECT));
 	i = 0;
@@ -72,7 +68,7 @@ static t_ex_ret		fill_symbols_table_64(t_bin_file *file)
 static t_ex_ret			get_sections_indices_64(t_bin_file *file, \
 							struct segment_command_64 *segment, uint8_t nb_sect)
 {
-	uint32_t 					i;
+	uint32_t					i;
 	size_t						size_sections;
 	struct section_64			*section;
 	void						*check;
@@ -120,7 +116,7 @@ static t_ex_ret			get_info_from_load_command_64(t_bin_file *file, \
 							struct load_command *lc, uint8_t *nb_sect)
 {
 	struct segment_command_64		*segment;
-	uint32_t					lc_cmd;
+	uint32_t						lc_cmd;
 
 	lc_cmd = swap32_if(lc->cmd, file->endian);
 	if (lc_cmd == LC_SYMTAB)
@@ -145,7 +141,7 @@ static t_ex_ret			get_info_from_load_command_64(t_bin_file *file, \
 
 static t_ex_ret			init_file_64(t_bin_file *file)
 {
-	uint32_t 						ncmds;
+	uint32_t						ncmds;
 	struct load_command				*lc;
 	uint32_t						i;
 	uint8_t							nb_sect;
@@ -165,12 +161,11 @@ static t_ex_ret			init_file_64(t_bin_file *file)
 			+ swap32_if(lc->cmdsize, file->endian), sizeof(*lc));
 		if (i < ncmds && !lc)
 			return (put_error(file->filename, TRUNC_OBJECT));
-
 	}
 	return (SUCCESS);
 }
 
-t_ex_ret			handle_64(t_endian endian, char *filename, \
+t_ex_ret				handle_64(t_endian endian, char *filename, \
 						size_t size, void *ptr)
 {
 	t_bin_file				file;

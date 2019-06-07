@@ -26,13 +26,13 @@ static t_ex_ret	run_merge_sort(t_symbol *tab, int start1, int end1, int end2,
 	while (i <= end2)
 	{
 		if (cpt1 == end1 + 1)
-				break ;
+			break ;
 		else if (cpt2 == end2 + 1)
-				tab[i] = tmp[cpt1++ - start1];
+			tab[i] = tmp[cpt1++ - start1];
 		else if (comp(tmp + cpt1 - start1, tab + cpt2) == FALSE)
-				tab[i] = tmp[cpt1++ - start1];
+			tab[i] = tmp[cpt1++ - start1];
 		else
-				tab[i] = tab[cpt2++];
+			tab[i] = tab[cpt2++];
 		i++;
 	}
 	free(tmp);
@@ -47,11 +47,11 @@ static t_ex_ret	merge_sort(t_symbol *tab, int start_index, int end_index,
 	middle = (end_index + start_index) / 2;
 	if (start_index != end_index)
 	{
-		if (merge_sort(tab, start_index, middle, comp) == FAILURE
-				|| merge_sort(tab, middle + 1, end_index, comp) == FAILURE
-				|| run_merge_sort(tab, start_index, middle, end_index, comp)
-					 == FAILURE)
-				return (FAILURE);
+		if (merge_sort(tab, start_index, middle, comp) == FAILURE \
+				|| merge_sort(tab, middle + 1, end_index, comp) == FAILURE \
+				|| run_merge_sort(tab, start_index, middle, end_index, comp) \
+				== FAILURE)
+			return (FAILURE);
 	}
 	return (SUCCESS);
 }

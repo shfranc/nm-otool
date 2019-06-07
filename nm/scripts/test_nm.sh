@@ -7,6 +7,12 @@ DEF="\033[0m"
 
 nm_bin=$PATH_FT_NM
 
+if [ -z $PATH_FT_NM ] ; then
+    echo "usage: sh test_nm.sh dir [...]"
+    echo "  Export PATH_FT_NM with path of your binary."
+    exit 1
+fi
+
 printf "\n%.-78s $YELLOW%s   %s$DEF\n" "" "OUTPUT" "RETURN"
 
 for arg in "$@"

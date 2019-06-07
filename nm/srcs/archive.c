@@ -8,7 +8,7 @@ static uint32_t		padding_ar_mac(char *ar_name)
 		return (0);
 }
 
-static t_ex_ret	loop_through_archive(t_bin_file *file,
+static t_ex_ret		loop_through_archive(t_bin_file *file,
 					struct ar_hdr *object_header)
 {
 	char				*object_name;
@@ -33,10 +33,10 @@ static t_ex_ret	loop_through_archive(t_bin_file *file,
 	return (SUCCESS);
 }
 
-static t_ex_ret	check_valid_archive(t_bin_file *file, struct ar_hdr *header,
+static t_ex_ret		check_valid_archive(t_bin_file *file, struct ar_hdr *header,
 				uint32_t *symtab_size, uint32_t *string_table_size)
 {
-	struct ranlib	   *symtab;
+	struct ranlib		*symtab;
 
 	*symtab_size = *(uint32_t*)is_in_file(file, ((void*)(header + 1) \
 		+ padding_ar_mac(header->ar_name)), sizeof(uint32_t));
@@ -53,7 +53,7 @@ static t_ex_ret	check_valid_archive(t_bin_file *file, struct ar_hdr *header,
 	return (SUCCESS);
 }
 
-static void		init_file(t_bin_file *file, char *filename, size_t size,
+static void			init_file(t_bin_file *file, char *filename, size_t size,
 					void *ptr)
 {
 	file->ptr = ptr;
@@ -61,13 +61,13 @@ static void		init_file(t_bin_file *file, char *filename, size_t size,
 	file->filename = filename;
 }
 
-t_ex_ret	 handle_archive(char *filename, size_t size, void *ptr)
+t_ex_ret			handle_archive(char *filename, size_t size, void *ptr)
 {
 	t_bin_file			file;
-	struct ar_hdr	   *header;
+	struct ar_hdr		*header;
 	uint32_t			symtab_size;
 	uint32_t			string_table_size;
-	struct ar_hdr	   *object_header;
+	struct ar_hdr		*object_header;
 
 	init_file(&file, filename, size, ptr);
 	symtab_size = 0;

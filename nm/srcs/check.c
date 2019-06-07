@@ -18,7 +18,7 @@ uint32_t	swap32_if(uint32_t n, t_endian endian)
 	if (endian == MAGIC)
 		return (n);
 	else
-		return(ft_swap_uint32(n));
+		return (ft_swap_uint32(n));
 }
 
 uint64_t	swap64_if(uint64_t n, t_endian endian)
@@ -26,5 +26,5 @@ uint64_t	swap64_if(uint64_t n, t_endian endian)
 	if (endian == MAGIC)
 		return (n);
 	else
-		return(ft_swap_uint64(n));
+		return (ft_swap_uint64(n));
 }

@@ -1,7 +1,6 @@
 #include "ft_nm.h"
 
 int					g_flags = 0;
-t_bool				g_multifile = FALSE;
 
 static t_ex_ret		process_one_file(char *filename)
 {
@@ -13,14 +12,17 @@ static t_ex_ret		process_one_file(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0 || fstat(fd, &buf) < 0)
 	{
-		if (errno == EACCES) 
+		if (errno == EACCES)
 			return (put_error(filename, PERM_DENIED));
 		else
 			return (put_error(filename, NO_FILE));
 	}
 	ptr = NULL;
-	if ((ptr = mmap(ptr, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
+	if ((ptr = mmap(ptr, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) \
+		== MAP_FAILED)
+	{
 		return (put_error("", VALID_OBJECT));
+	}
 	ret = ft_nm(NULL, filename, (uint64_t)buf.st_size, ptr);
 	if (munmap(ptr, buf.st_size) < 0)
 		return (put_error("", UNMAP_ERROR));
