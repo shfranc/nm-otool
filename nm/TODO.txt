@@ -1,6 +1,7 @@
 TODO
 ====
 
+- fat32
 - fat64
 - options
 - ft_otool (-t)
