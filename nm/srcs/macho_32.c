@@ -176,7 +176,7 @@ t_ex_ret				handle_32(t_endian endian, char *filename, \
 	if (init_file_32(&file) == FAILURE)
 		return (FAILURE);
 	if (!file.symtab_cmd)
-		return (FAILURE);
+		return (SUCCESS);
 	file.symbols = (t_symbol*)ft_memalloc(sizeof(t_symbol) \
 		* swap32_if(file.symtab_cmd->nsyms, file.endian));
 	if (!file.symbols)

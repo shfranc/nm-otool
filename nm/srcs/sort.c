@@ -65,8 +65,6 @@ t_ex_ret			sort_symbols(t_bin_file *file)
 	if (merge_sort(file->symbols, 0, \
 		swap32_if(file->symtab_cmd->nsyms, file->endian) - 1, \
 		&comp_ascii) == FAILURE)
-	{
 		return (FAILURE);
-	}
 	return (SUCCESS);
 }

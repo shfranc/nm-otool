@@ -72,7 +72,7 @@ t_ex_ret			handle_archive(char *filename, size_t size, void *ptr)
 	string_table_size = 0;
 	header = (struct ar_hdr*)is_in_file(&file, ptr + SARMAG, sizeof(*header));
 	if (!header)
-		return (put_error(filename, VALID_OBJECT));
+		return (SUCCESS);
 	if (check_valid_archive(&file, header, &symtab_size, &string_table_size) \
 		== FAILURE)
 		return (FAILURE);
