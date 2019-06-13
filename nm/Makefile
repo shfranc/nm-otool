@@ -9,7 +9,9 @@ PATH_OBJS = objs
 
 SRCS = $(addprefix $(PATH_SRCS)/, main.c \
 	ft_nm.c \
+	macho_32_init.c \
 	macho_32.c \
+	macho_64_init.c \
 	macho_64.c \
 	fat_32.c \
 	fat_64.c \

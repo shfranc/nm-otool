@@ -69,8 +69,10 @@ int							get_options(int *argc, char ***argv);
 t_bool						is_option_activated(char option);
 t_ex_ret					ft_nm(char *archive_name, char *filename, \
 								uint64_t size, void *ptr);
+t_ex_ret					init_file_32(t_bin_file *file);
 t_ex_ret					handle_32(t_endian endian, char *filename, \
 								size_t size, void *ptr);
+t_ex_ret					init_file_64(t_bin_file *file);
 t_ex_ret					handle_64(t_endian endian, char *filename, \
 								size_t size, void *ptr);
 t_ex_ret					handle_fat32(t_endian endian, char *filename, \
