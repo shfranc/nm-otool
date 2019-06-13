@@ -1,14 +1,5 @@
 #include "ft_nm.h"
 
-static t_bool		comp_ascii(t_symbol *symb1, t_symbol *symb2)
-{
-	if (ft_strcmp(symb1->name, symb2->name) == 0)
-		return (symb1->value >= symb2->value ? TRUE : FALSE);
-	else if (ft_strcmp(symb1->name, symb2->name) > 0)
-		return (TRUE);
-	return (FALSE);
-}
-
 static t_ex_ret		run_merge_sort(t_symbol *tab, t_sort *data,
 						t_bool (*comp)(t_symbol *symb1, t_symbol *symb2))
 {
@@ -62,9 +53,16 @@ static t_ex_ret		merge_sort(t_symbol *tab, int start_index, int end_index,
 
 t_ex_ret			sort_symbols(t_bin_file *file)
 {
+	t_bool (*comp)(t_symbol *symb1, t_symbol *symb2);
+
+	if (is_option_activated('p'))
+		return (SUCCESS);
+	comp = is_option_activated('r') ? &comp_ascii_rev : &comp_ascii;
+	if (is_option_activated('n'))
+		comp = is_option_activated('r') ? &comp_num_rev : &comp_num;
 	if (merge_sort(file->symbols, 0, \
 		swap32_if(file->symtab_cmd->nsyms, file->endian) - 1, \
-		&comp_ascii) == FAILURE)
+		comp) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }

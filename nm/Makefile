@@ -16,6 +16,7 @@ SRCS = $(addprefix $(PATH_SRCS)/, main.c \
 	print.c \
 	type.c \
 	sort.c \
+	comp.c \
 	check.c \
 	error.c \
 	options.c )

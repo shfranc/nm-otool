@@ -59,7 +59,11 @@ typedef struct				s_sort
 	int						cpt2;
 }							t_sort;
 
-
+/*
+** PROCESS
+*/
+int							get_options(int *argc, char ***argv);
+t_bool						is_option_activated(char option);
 t_ex_ret					ft_nm(char *archive_name, char *filename, \
 								uint64_t size, void *ptr);
 t_ex_ret					handle_32(t_endian endian, char *filename, \
@@ -70,13 +74,18 @@ t_ex_ret					handle_fat32(t_endian endian, char *filename, \
 								size_t size, void *ptr);
 t_ex_ret					handle_archive(char *filename, size_t size, \
 								void *ptr);
-
-int							get_options(int *argc, char ***argv);
-t_bool						is_option_activated(char option);
 char						get_type_char(uint8_t type, uint8_t sect, \
 								uint64_t value, t_bin_file *file);
-t_ex_ret					sort_symbols(t_bin_file *file);
 void						print_name(char *name);
+
+/*
+** SORT
+*/
+t_ex_ret					sort_symbols(t_bin_file *file);
+t_bool						comp_ascii(t_symbol *symb1, t_symbol *symb2);
+t_bool						comp_ascii_rev(t_symbol *symb1, t_symbol *symb2);
+t_bool						comp_num(t_symbol *symb1, t_symbol *symb2);
+t_bool						comp_num_rev(t_symbol *symb1, t_symbol *symb2);
 
 /*
 ** CHECKS
