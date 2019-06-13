@@ -42,8 +42,8 @@ t_ex_ret		ft_nm(char *archive_name, char *filename, uint64_t size,
 	if (magic_number == FAT_CIGAM)
 		return (handle_fat32(CIGAM, filename, size, ptr));
 	if (magic_number == FAT_MAGIC_64)
-		ft_putendl("FAT 64 MAGIC");
+		return (handle_fat64(MAGIC, filename, size, ptr));
 	if (magic_number == FAT_CIGAM_64)
-		ft_putendl("FAT 64 CIGAM");
+		return (handle_fat64(CIGAM, filename, size, ptr));
 	return (put_error(filename, VALID_OBJECT));
 }

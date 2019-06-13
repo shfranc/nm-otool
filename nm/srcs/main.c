@@ -49,7 +49,7 @@ static t_ex_ret		process_files(int ac, char **av)
 	return (ret);
 }
 
-int				main(int ac, char **av)
+int					main(int ac, char **av)
 {
 	if (ac == 1)
 		return (process_one_file(DEFAULT_FILE));

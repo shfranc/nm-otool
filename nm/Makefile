@@ -12,12 +12,13 @@ SRCS = $(addprefix $(PATH_SRCS)/, main.c \
 	macho_32.c \
 	macho_64.c \
 	fat_32.c \
+	fat_64.c \
 	archive.c \
 	print.c \
 	type.c \
 	sort.c \
 	comp.c \
-	check.c \
+	utils.c \
 	error.c \
 	options.c )
 OBJS = $(SRCS:$(PATH_SRCS)/%.c=$(PATH_OBJS)/%.o)
