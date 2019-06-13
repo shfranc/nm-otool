@@ -12,12 +12,15 @@
 # include <ar.h>
 # include <errno.h>
 
-# define OPTIONS			"gjnpruU"
 # define TOGGLE_CASE		32
+# define DEFAULT_FILE		"a.out"
+# define OPTIONS			"gjnpruU"
+
 # define NO_FILE			"No such file or directory."
 # define PERM_DENIED		"Permission denied."
 # define BAD_STRING_INDEX	"bad string index"
 # define UNMAP_ERROR		"unmap: error"
+# define CLOSE_ERROR		"close: error"
 # define VALID_OBJECT		"The file was not recognized as a valid object file"
 # define TRUNC_OBJECT		"Truncated or malformed object"
 
