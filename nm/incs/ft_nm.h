@@ -17,7 +17,6 @@
 # define NO_FILE			"No such file or directory."
 # define PERM_DENIED		"Permission denied."
 # define BAD_STRING_INDEX	"bad string index"
-# define INDIRECT_STRING	" (indirect for ?)"
 # define UNMAP_ERROR		"unmap: error"
 # define VALID_OBJECT		"The file was not recognized as a valid object file"
 # define TRUNC_OBJECT		"Truncated or malformed object"
@@ -73,6 +72,7 @@ t_ex_ret					handle_archive(char *filename, size_t size, \
 								void *ptr);
 
 int							get_options(int *argc, char ***argv);
+t_bool						is_option_activated(char option);
 char						get_type_char(uint8_t type, uint8_t sect, \
 								uint64_t value, t_bin_file *file);
 t_ex_ret					sort_symbols(t_bin_file *file);

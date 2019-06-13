@@ -1,5 +1,29 @@
 #include "ft_nm.h"
 
+static void				print_one_symbol_64(t_symbol *symbol)
+{
+	if (symbol->type == '-' \
+		|| (is_option_activated('g') && (symbol->type & TOGGLE_CASE)))
+		return ;
+	if (is_option_activated('u') \
+		&& (symbol->type != 'U' && symbol->type != 'u'))
+		return ;
+	if (is_option_activated('U') \
+		&& (symbol->type == 'U' || symbol->type == 'u'))
+		return ;
+	if (!is_option_activated('j') && !is_option_activated('u'))
+	{
+		if (symbol->type != 'U' && symbol->type != 'u')
+			ft_puthexa_uint64(symbol->value);
+		else
+			write(1, "                ", 16);
+		write(1, " ", 1);
+		ft_putchar(symbol->type);
+	}
+	print_name(symbol->name);
+	write(1, "\n", 1);
+}
+
 static void				print_symbols_table_64(t_bin_file *file)
 {
 	size_t			i;
@@ -9,19 +33,7 @@ static void				print_symbols_table_64(t_bin_file *file)
 	nsyms = swap32_if(file->symtab_cmd->nsyms, file->endian);
 	while (i < nsyms)
 	{
-		if (file->symbols[i].type == '-')
-		{
-			i++;
-			continue ;
-		}
-		if (file->symbols[i].type != 'U' && file->symbols[i].type != 'u')
-			ft_puthexa_uint64(file->symbols[i].value);
-		else
-			write(1, "                ", 16);
-		write(1, " ", 1);
-		ft_putchar(file->symbols[i].type);
-		print_name(file->symbols[i].name);
-		write(1, "\n", 1);
+		print_one_symbol_64(&file->symbols[i]);
 		i++;
 	}
 }
