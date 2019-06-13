@@ -1,18 +1,30 @@
 #include "ft_nm.h"
 
+t_bool			is_option_activated(char option)
+{
+	static char	*options = OPTIONS;
+	char		*option_index;
+
+	if ((option_index = ft_strchr(OPTIONS, option)) == NULL)
+		return (FALSE);
+	if (g_flags & (1 << (option_index - options)))
+		return (TRUE);
+	return (FALSE);
+}
+
 static int		save_options(char *str)
 {
 	static char	*options = OPTIONS;
 	char		*option;
-	
-	while(*str && *str == '-')
+
+	while (*str && *str == '-')
 		str++;
 	while (*str)
 	{
 		if ((option = ft_strchr(OPTIONS, *str)) == NULL)
 			return (-1);
 		else
-			g_flags |= ( 1 << (option - options));
+			g_flags |= (1 << (option - options));
 		str++;
 	}
 	return (0);

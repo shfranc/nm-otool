@@ -12,12 +12,13 @@ SRCS = $(addprefix $(PATH_SRCS)/, main.c \
 	macho_32.c \
 	macho_64.c \
 	fat_32.c \
+	archive.c \
 	print.c \
 	type.c \
 	sort.c \
 	check.c \
 	error.c \
-	options.c ) 
+	options.c )
 OBJS = $(SRCS:$(PATH_SRCS)/%.c=$(PATH_OBJS)/%.o)
 INCS = incs $(PATH_LIB)/includes
 
@@ -52,6 +53,10 @@ run_tests: clean_tests
 	@printf "\033[1;33m--------------------\n%s\n--------------------\033[0m\n" "$(NAME)"
 	@python3 tests/main.py
 
+norm:
+	@norminette $(PATH_SRCS) incs
+	@make -C $(PATH_LIB) norm
+
 clean:
 	@rm -rf $(OBJS)
 	@rm -rf $(PATH_OBJS)
@@ -66,6 +71,6 @@ fclean_lib :
 
 fclean_all: fclean_lib fclean
 
-re_with_lib: fclean_all all	
+re_with_lib: fclean_all all
 
 re: fclean all

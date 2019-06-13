@@ -1,15 +1,8 @@
 #include "ft_nm.h"
 
-int g_flags = 0;
+int					g_flags = 0;
 
-static void			put_filename(char *filename)
-{
-	ft_putendl("");	
-	ft_putstr(filename);
-	ft_putendl(":");
-}
-
-static t_ex_ret		process_one_file(t_bool multifile, char *filename)
+static t_ex_ret		process_one_file(char *filename)
 {
 	t_ex_ret	ret;
 	int			fd;
@@ -19,17 +12,16 @@ static t_ex_ret		process_one_file(t_bool multifile, char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0 || fstat(fd, &buf) < 0)
 	{
-		if (errno == EACCES) 
+		if (errno == EACCES)
 			return (put_error(filename, PERM_DENIED));
 		else
 			return (put_error(filename, NO_FILE));
 	}
 	ptr = NULL;
-	if ((ptr = mmap(ptr, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
+	if ((ptr = mmap(ptr, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) \
+		== MAP_FAILED)
 		return (put_error("", VALID_OBJECT));
-	if (multifile)
-		put_filename(filename);
-	ret = ft_nm(filename, (uint64_t)buf.st_size, ptr);
+	ret = ft_nm(NULL, filename, (uint64_t)buf.st_size, ptr);
 	if (munmap(ptr, buf.st_size) < 0)
 		return (put_error("", UNMAP_ERROR));
 	if (close(fd) < 0)
@@ -40,15 +32,14 @@ static t_ex_ret		process_one_file(t_bool multifile, char *filename)
 static t_ex_ret		process_files(int ac, char **av)
 {
 	t_ex_ret	ret;
-	t_bool		multifile;
 	int			i;
 
 	ret = SUCCESS;
-	multifile = ac > 1 ? TRUE : FALSE;
+	g_multifile = ac > 1 ? TRUE : FALSE;
 	i = 0;
 	while (i < ac)
 	{
-		if (process_one_file(multifile, *av) == FAILURE)
+		if (process_one_file(*av) == FAILURE)
 			ret = FAILURE;
 		i++;
 		av++;

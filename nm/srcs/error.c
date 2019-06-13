@@ -19,11 +19,11 @@ t_ex_ret	illegal_option(void)
 	return (put_usage());
 }
 
-t_ex_ret    put_error(char *filename, char *message)
+t_ex_ret	put_error(char *filename, char *message)
 {
-    ft_putstr_fd("ft_nm: ", 2);
-    ft_putstr_fd(filename, 2);
-    ft_putstr_fd(": ", 2);
-    ft_putendl_fd(message, 2);
-    return (FAILURE);
+	ft_putstr_fd("ft_nm: ", 2);
+	ft_putstr_fd(filename, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putendl_fd(message, 2);
+	return (FAILURE);
 }
