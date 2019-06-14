@@ -106,6 +106,7 @@ t_ex_ret				handle_64(t_endian endian, char *filename, \
 	file.end = ptr + size;
 	if (init_file_64(&file) == FAILURE)
 		return (FAILURE);
-	hex_dump_64(&file);
+	// hex_dump_64(&file);
+	hex_dump_compact_64(&file);
 	return (SUCCESS);
 }

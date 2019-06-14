@@ -47,6 +47,8 @@ t_ex_ret					handle_32(t_endian endian, char *filename, \
 								size_t size, void *ptr);
 void						hex_dump_64(t_bin_file *file);
 void						hex_dump_32(t_bin_file *file);
+void						hex_dump_compact_32(t_bin_file *file);
+void						hex_dump_compact_64(t_bin_file *file);
 
 void						*is_in_file(t_bin_file *file, void *dest, \
 								size_t size);
