@@ -43,7 +43,7 @@ t_ex_ret					ft_otool(char *archive_name, char *filename, uint64_t size,
 								void *ptr);
 t_ex_ret					handle_64(t_endian endian, char *filename, \
 								size_t size, void *ptr);
-void						print_text_section(t_bin_file *file);
+void						hex_dump_64(t_bin_file *file);
 void						*is_in_file(t_bin_file *file, void *dest, \
 								size_t size);
 uint32_t					swap32_if(uint32_t n, t_endian endian);

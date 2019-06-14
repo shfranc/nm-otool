@@ -94,8 +94,6 @@ t_ex_ret				init_file_64(t_bin_file *file)
 	return (SUCCESS);
 }
 
-
-
 t_ex_ret			handle_64(t_endian endian, char *filename, \
 						size_t size, void *ptr)
 {
@@ -108,6 +106,6 @@ t_ex_ret			handle_64(t_endian endian, char *filename, \
 	file.end = ptr + size;
 	if (init_file_64(&file) == FAILURE)
 		return (FAILURE);
-	print_text_section(&file);
+	hex_dump_64(&file);
 	return (SUCCESS);
 }
