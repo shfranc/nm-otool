@@ -26,5 +26,7 @@ t_ex_ret		ft_otool(char *archive_name, char *filename, uint64_t size,
 
 	put_filename(filename, archive_name);
 	magic_number = *(uint32_t *)ptr;
+	if (magic_number == MH_MAGIC_64)
+		return (handle_64(MAGIC, filename, size, ptr));
 	return (put_error(filename, VALID_OBJECT));
 }
