@@ -26,7 +26,23 @@ t_ex_ret		ft_otool(char *archive_name, char *filename, uint64_t size,
 
 	put_filename(filename, archive_name);
 	magic_number = *(uint32_t *)ptr;
+	if (magic_number == MH_MAGIC)
+		return (handle_32(MAGIC, filename, size, ptr));
 	if (magic_number == MH_MAGIC_64)
 		return (handle_64(MAGIC, filename, size, ptr));
+	if (magic_number == MH_CIGAM)
+		return (handle_32(CIGAM, filename, size, ptr));
+	if (magic_number == MH_CIGAM_64)
+		return (handle_64(CIGAM, filename, size, ptr));
+	// if (ft_strncmp((char *)ptr, ARMAG, SARMAG) == 0)
+		// return (handle_archive(filename, size, ptr));
+	// if (magic_number == FAT_MAGIC)
+		// return (handle_fat32(MAGIC, filename, size, ptr));
+	// if (magic_number == FAT_CIGAM)
+		// return (handle_fat32(CIGAM, filename, size, ptr));
+	// if (magic_number == FAT_MAGIC_64)
+		// return (handle_fat64(MAGIC, filename, size, ptr));
+	// if (magic_number == FAT_CIGAM_64)
+		// return (handle_fat64(CIGAM, filename, size, ptr));
 	return (put_error(filename, VALID_OBJECT));
 }

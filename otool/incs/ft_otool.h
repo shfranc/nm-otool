@@ -34,7 +34,7 @@ typedef struct				s_bin_file
 	void					*ptr;
 	void					*end;
 	t_endian				endian;
-	uint64_t				text_section_offset;
+	uint32_t				text_section_offset;
 	uint64_t				text_section_addr;
 	uint64_t				text_section_size;
 }							t_bin_file;
@@ -43,7 +43,11 @@ t_ex_ret					ft_otool(char *archive_name, char *filename, uint64_t size,
 								void *ptr);
 t_ex_ret					handle_64(t_endian endian, char *filename, \
 								size_t size, void *ptr);
+t_ex_ret					handle_32(t_endian endian, char *filename, \
+								size_t size, void *ptr);
 void						hex_dump_64(t_bin_file *file);
+void						hex_dump_32(t_bin_file *file);
+
 void						*is_in_file(t_bin_file *file, void *dest, \
 								size_t size);
 uint32_t					swap32_if(uint32_t n, t_endian endian);
