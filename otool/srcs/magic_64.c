@@ -18,11 +18,11 @@ static t_ex_ret			get_text_section(t_bin_file *file, \
 	i = 0;
 	while (i < nsects)
 	{
-		ft_putendl(section->sectname);
 		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
 		{
-			ft_putendl("Contents of (__TEXT,__text) section");
-			file->text_section = section;
+			file->text_section_offset = swap64_if(section->offset, file->endian);
+			file->text_section_addr = swap64_if(section->addr, file->endian); // swap ?
+			file->text_section_size = swap64_if(section->size, file->endian);
 			return (SUCCESS);
 		}
 		section = (void *)section + sizeof(struct section_64);
@@ -46,7 +46,6 @@ static t_ex_ret			get_info_from_load_command_64(t_bin_file *file, \
 			return (put_error(file->filename, TRUNC_OBJECT));
 		if (ft_strcmp(segment->segname, SEG_TEXT) == 0)
 		{
-			ft_putendl("segment __TEXT");
 			if (get_text_section(file, segment) == FAILURE)
 				return (FAILURE);
 		}
@@ -95,6 +94,8 @@ t_ex_ret				init_file_64(t_bin_file *file)
 	return (SUCCESS);
 }
 
+
+
 t_ex_ret			handle_64(t_endian endian, char *filename, \
 						size_t size, void *ptr)
 {
@@ -107,5 +108,6 @@ t_ex_ret			handle_64(t_endian endian, char *filename, \
 	file.end = ptr + size;
 	if (init_file_64(&file) == FAILURE)
 		return (FAILURE);
+	print_text_section(&file);
 	return (SUCCESS);
 }
