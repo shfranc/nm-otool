@@ -8,21 +8,38 @@ static void		dump_one_byte(const void *addr, char buf[3])
 	buf[1] = hex[(int)(*(char*)addr & 0x0F)];
 }
 
-static void		dump_four_byte(const void *addr, char buf[3])
+static void		dump_four_byte(const void *addr, char buf[3], t_endian endian)
 {
 	const char	hex[16] = "0123456789abcdef";
 
-	buf[0] = hex[(int)(*(char*)addr >> 4 & 0x0F)];
-	buf[1] = hex[(int)(*(char*)addr & 0x0F)];
-	addr++;
-	buf[2] = hex[(int)(*(char*)addr >> 4 & 0x0F)];
-	buf[3] = hex[(int)(*(char*)addr & 0x0F)];
-	addr++;
-	buf[4] = hex[(int)(*(char*)addr >> 4 & 0x0F)];
-	buf[5] = hex[(int)(*(char*)addr & 0x0F)];
-	addr++;
-	buf[6] = hex[(int)(*(char*)addr >> 4 & 0x0F)];
-	buf[7] = hex[(int)(*(char*)addr & 0x0F)];
+	if (endian == CIGAM)
+	{
+		buf[0] = hex[(int)(*(char*)addr >> 4 & 0x0F)];
+		buf[1] = hex[(int)(*(char*)addr & 0x0F)];
+		addr++;
+		buf[2] = hex[(int)(*(char*)addr >> 4 & 0x0F)];
+		buf[3] = hex[(int)(*(char*)addr & 0x0F)];
+		addr++;
+		buf[4] = hex[(int)(*(char*)addr >> 4 & 0x0F)];
+		buf[5] = hex[(int)(*(char*)addr & 0x0F)];
+		addr++;
+		buf[6] = hex[(int)(*(char*)addr >> 4 & 0x0F)];
+		buf[7] = hex[(int)(*(char*)addr & 0x0F)];
+	}
+	else
+	{
+		buf[6] = hex[(int)(*(char*)addr >> 4 & 0x0F)];
+		buf[7] = hex[(int)(*(char*)addr & 0x0F)];
+		addr++;
+		buf[4] = hex[(int)(*(char*)addr >> 4 & 0x0F)];
+		buf[5] = hex[(int)(*(char*)addr & 0x0F)];
+		addr++;
+		buf[2] = hex[(int)(*(char*)addr >> 4 & 0x0F)];
+		buf[3] = hex[(int)(*(char*)addr & 0x0F)];
+		addr++;
+		buf[0] = hex[(int)(*(char*)addr >> 4 & 0x0F)];
+		buf[1] = hex[(int)(*(char*)addr & 0x0F)];
+	}
 }
 
 void				hex_dump_compact_64(t_bin_file *file)
@@ -44,7 +61,7 @@ void				hex_dump_compact_64(t_bin_file *file)
 			ft_puthexa_uint64(file->text_section_addr + i);
 			write(1, "\t", 1);
 		}
-		dump_four_byte((const void *)(start + i), buf);
+		dump_four_byte((const void *)(start + i), buf, file->endian);
 		write(1, buf, 9);
 		if (j++ % 4 == 3)
 			write(1, "\n", 1);
@@ -100,7 +117,7 @@ void				hex_dump_compact_32(t_bin_file *file)
 			ft_puthexa_uint32(file->text_section_addr + i);
 			write(1, "\t", 1);
 		}
-		dump_four_byte((const void *)(start + i), buf);
+		dump_four_byte((const void *)(start + i), buf, file->endian);
 		write(1, buf, 9);
 		if (j++ % 4 == 3)
 			write(1, "\n", 1);

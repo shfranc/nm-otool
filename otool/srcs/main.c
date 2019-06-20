@@ -29,12 +29,16 @@ static t_ex_ret		process_one_file(char *filename)
 
 int			main(int ac, char **av)
 {
+	t_ex_ret ret;
+
+	ret = SUCCESS;
 	if (ac < 2)
 		return(put_usage());
 	av++;
 	while (--ac)
 	{
-		process_one_file(*av++);
+		if (process_one_file(*av++) == FAILURE)
+			ret = FAILURE;
 	}
-	return (SUCCESS);
+	return (ret);
 }

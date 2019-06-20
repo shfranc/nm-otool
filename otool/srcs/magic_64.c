@@ -62,6 +62,7 @@ static t_ex_ret			get_load_commands_64(t_bin_file *file, \
 		sizeof(*header));
 	if (!header)
 		return (put_error(file->filename, VALID_OBJECT));
+	file->cputype = header->cputype;	
 	*ncmds = swap32_if(header->ncmds, file->endian);
 	*lc = (struct load_command *)is_in_file(file, file->ptr + sizeof(*header), \
 		sizeof(**lc));
@@ -106,7 +107,9 @@ t_ex_ret				handle_64(t_endian endian, char *filename, \
 	file.end = ptr + size;
 	if (init_file_64(&file) == FAILURE)
 		return (FAILURE);
-	// hex_dump_64(&file);
-	hex_dump_compact_64(&file);
+	if (display_compact(file.cputype))
+		hex_dump_compact_64(&file);
+	else
+		hex_dump_64(&file);
 	return (SUCCESS);
 }

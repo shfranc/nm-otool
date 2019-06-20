@@ -34,6 +34,7 @@ typedef struct				s_bin_file
 	void					*ptr;
 	void					*end;
 	t_endian				endian;
+	cpu_type_t				cputype;
 	uint32_t				text_section_offset;
 	uint64_t				text_section_addr;
 	uint64_t				text_section_size;
@@ -45,6 +46,7 @@ t_ex_ret					handle_64(t_endian endian, char *filename, \
 								size_t size, void *ptr);
 t_ex_ret					handle_32(t_endian endian, char *filename, \
 								size_t size, void *ptr);
+t_bool						display_compact(cpu_type_t cpu_type);
 void						hex_dump_64(t_bin_file *file);
 void						hex_dump_32(t_bin_file *file);
 void						hex_dump_compact_32(t_bin_file *file);
@@ -57,5 +59,7 @@ uint64_t					swap64_if(uint64_t n, t_endian endian);
 
 t_ex_ret					put_usage(void);
 t_ex_ret					put_error(char *filename, char *message);
+t_ex_ret					put_error_exit_success(char *filename, \
+								char *message);
 
 #endif

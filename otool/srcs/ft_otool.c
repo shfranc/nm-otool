@@ -44,5 +44,5 @@ t_ex_ret		ft_otool(char *archive_name, char *filename, uint64_t size,
 		// return (handle_fat64(MAGIC, filename, size, ptr));
 	// if (magic_number == FAT_CIGAM_64)
 		// return (handle_fat64(CIGAM, filename, size, ptr));
-	return (put_error(filename, VALID_OBJECT));
+	return (put_error_exit_success(filename, VALID_OBJECT));
 }

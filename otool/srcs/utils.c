@@ -26,3 +26,12 @@ uint64_t	swap64_if(uint64_t n, t_endian endian)
 	else
 		return (ft_swap_uint64(n));
 }
+
+t_bool		display_compact(cpu_type_t cpu_type)
+{
+	if (cpu_type != CPU_TYPE_X86
+	&& cpu_type != CPU_TYPE_X86_64
+	&& cpu_type != CPU_TYPE_I386)
+		return (TRUE);
+	return (FALSE);
+}
