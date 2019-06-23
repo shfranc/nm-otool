@@ -28,7 +28,7 @@ static t_ex_ret			get_text_section(t_bin_file *file, \
 		section = (void *)section + sizeof(struct section_64);
 		i++;
 	}
-	return (put_error(file->filename, "No text section"));
+	return (SUCCESS);
 }
 
 static t_ex_ret			get_info_from_load_command_64(t_bin_file *file, \
@@ -44,11 +44,11 @@ static t_ex_ret			get_info_from_load_command_64(t_bin_file *file, \
 			sizeof(*segment));
 		if (!segment)
 			return (put_error(file->filename, TRUNC_OBJECT));
-		if (ft_strcmp(segment->segname, SEG_TEXT) == 0)
-		{
+		// if (ft_strcmp(segment->segname, SEG_TEXT) == 0)
+		// {
 			if (get_text_section(file, segment) == FAILURE)
 				return (FAILURE);
-		}
+		// }
 	}
 	return (SUCCESS);
 }
