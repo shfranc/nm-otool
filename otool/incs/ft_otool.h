@@ -48,6 +48,9 @@ t_ex_ret					handle_32(t_endian endian, char *filename, \
 								size_t size, void *ptr);
 t_ex_ret					handle_archive(char *filename, size_t size, \
 								void *ptr);
+t_ex_ret					handle_fat32(t_endian endian, char *filename, \
+								size_t size, void *ptr);
+
 t_bool						display_compact(cpu_type_t cpu_type);
 void						hex_dump_64(t_bin_file *file);
 void						hex_dump_32(t_bin_file *file);
@@ -58,7 +61,9 @@ void						*is_in_file(t_bin_file *file, void *dest, \
 								size_t size);
 uint32_t					swap32_if(uint32_t n, t_endian endian);
 uint64_t					swap64_if(uint64_t n, t_endian endian);
-
+t_bool						is_archi_x86_64(cpu_type_t cpu_type);
+char						*get_archi_name(cpu_type_t cpu_type, \
+								cpu_subtype_t cpu_subtype);
 t_ex_ret					put_usage(void);
 t_ex_ret					put_error(char *filename, char *message);
 t_ex_ret					put_error_exit_success(char *filename, \

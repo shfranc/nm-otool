@@ -40,10 +40,10 @@ t_ex_ret		ft_otool(char *archive_name, char *filename, uint64_t size,
 		return (handle_64(CIGAM, filename, size, ptr));
 	if (ft_strncmp((char *)ptr, ARMAG, SARMAG) == 0)
 		return (handle_archive(filename, size, ptr));
-	// if (magic_number == FAT_MAGIC)
-		// return (handle_fat32(MAGIC, filename, size, ptr));
-	// if (magic_number == FAT_CIGAM)
-		// return (handle_fat32(CIGAM, filename, size, ptr));
+	if (magic_number == FAT_MAGIC)
+		return (handle_fat32(MAGIC, filename, size, ptr));
+	if (magic_number == FAT_CIGAM)
+		return (handle_fat32(CIGAM, filename, size, ptr));
 	// if (magic_number == FAT_MAGIC_64)
 		// return (handle_fat64(MAGIC, filename, size, ptr));
 	// if (magic_number == FAT_CIGAM_64)
