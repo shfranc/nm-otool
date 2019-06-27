@@ -1,9 +1,11 @@
 #include "ft_otool.h"
 
+t_bool			g_fat = FALSE;
+
 static void		put_filename(char *filename, char *archive_name, char *ptr, \
 					uint32_t magic_number)
 {
-	if (magic_number == FAT_MAGIC \
+	if (g_fat || magic_number == FAT_MAGIC \
 		|| magic_number == FAT_CIGAM \
 		|| magic_number == FAT_MAGIC_64 \
 		|| magic_number == FAT_CIGAM_64)

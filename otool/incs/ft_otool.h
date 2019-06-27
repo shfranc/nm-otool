@@ -22,6 +22,8 @@
 # define VALID_OBJECT		"The file was not recognized as a valid object file"
 # define TRUNC_OBJECT		"Truncated or malformed object"
 
+extern t_bool				g_fat;
+
 typedef enum				e_endian
 {
 	MAGIC,
