@@ -50,6 +50,8 @@ t_ex_ret					handle_archive(char *filename, size_t size, \
 								void *ptr);
 t_ex_ret					handle_fat32(t_endian endian, char *filename, \
 								size_t size, void *ptr);
+t_ex_ret					handle_fat64(t_endian endian, char *filename, \
+								size_t size, void *ptr);
 
 t_bool						display_compact(cpu_type_t cpu_type);
 void						hex_dump_64(t_bin_file *file);

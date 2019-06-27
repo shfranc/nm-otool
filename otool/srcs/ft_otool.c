@@ -1,7 +1,13 @@
 #include "ft_otool.h"
 
-static void		put_filename(char *filename, char *archive_name, char *ptr)
+static void		put_filename(char *filename, char *archive_name, char *ptr, \
+					uint32_t magic_number)
 {
+	if (magic_number == FAT_MAGIC \
+		|| magic_number == FAT_CIGAM \
+		|| magic_number == FAT_MAGIC_64 \
+		|| magic_number == FAT_CIGAM_64)
+		return ;
 	if (!archive_name && ft_strncmp((char *)ptr, ARMAG, SARMAG) == 0)
 	{
 		ft_putstr("Archive : ");
@@ -26,10 +32,8 @@ t_ex_ret		ft_otool(char *archive_name, char *filename, uint64_t size,
 {
 	uint32_t		magic_number;
 
-	(void)size;
-
-	put_filename(filename, archive_name, ptr);
 	magic_number = *(uint32_t *)ptr;
+	put_filename(filename, archive_name, ptr, magic_number);
 	if (magic_number == MH_MAGIC)
 		return (handle_32(MAGIC, filename, size, ptr));
 	if (magic_number == MH_MAGIC_64)
@@ -44,9 +48,9 @@ t_ex_ret		ft_otool(char *archive_name, char *filename, uint64_t size,
 		return (handle_fat32(MAGIC, filename, size, ptr));
 	if (magic_number == FAT_CIGAM)
 		return (handle_fat32(CIGAM, filename, size, ptr));
-	// if (magic_number == FAT_MAGIC_64)
-		// return (handle_fat64(MAGIC, filename, size, ptr));
-	// if (magic_number == FAT_CIGAM_64)
-		// return (handle_fat64(CIGAM, filename, size, ptr));
+	if (magic_number == FAT_MAGIC_64)
+		return (handle_fat64(MAGIC, filename, size, ptr));
+	if (magic_number == FAT_CIGAM_64)
+		return (handle_fat64(CIGAM, filename, size, ptr));
 	return (put_error_exit_success(filename, VALID_OBJECT));
 }

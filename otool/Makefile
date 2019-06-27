@@ -12,6 +12,7 @@ SRCS = $(addprefix $(PATH_SRCS)/, main.c \
 	magic_64.c \
 	magic_32.c \
 	fat_32.c \
+	fat_64.c \
 	dump_hexa.c \
 	archive.c \
 	utils.c \
