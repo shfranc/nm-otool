@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   magic_32.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/27 15:30:45 by sfranc            #+#    #+#             */
+/*   Updated: 2019/06/27 15:30:46 by sfranc           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_otool.h"
 
 static t_ex_ret			get_text_section(t_bin_file *file, \
@@ -19,12 +31,7 @@ static t_ex_ret			get_text_section(t_bin_file *file, \
 	while (i < nsects)
 	{
 		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
-		{
-			file->text_section_offset = swap32_if(section->offset, file->endian);
-			file->text_section_addr = (uint64_t)swap32_if(section->addr, file->endian);
-			file->text_section_size = (uint64_t)swap32_if(section->size, file->endian);
-			return (SUCCESS);
-		}
+			return (get_text_section_info_32(file, section));
 		section = (void *)section + sizeof(struct section);
 		i++;
 	}
@@ -44,11 +51,8 @@ static t_ex_ret			get_info_from_load_command_32(t_bin_file *file, \
 			sizeof(*segment));
 		if (!segment)
 			return (put_error(file->filename, TRUNC_OBJECT));
-		// if (ft_strcmp(segment->segname, SEG_TEXT) == 0)
-		// {
-			if (get_text_section(file, segment) == FAILURE)
-				return (FAILURE);
-		// }
+		if (get_text_section(file, segment) == FAILURE)
+			return (FAILURE);
 	}
 	return (SUCCESS);
 }
@@ -105,6 +109,9 @@ t_ex_ret				handle_32(t_endian endian, char *filename, \
 	file.end = ptr + size;
 	if (init_file_32(&file) == FAILURE)
 		return (FAILURE);
+	if (!is_in_file(&file, file.ptr + file.section_offset, \
+		file.section_size))
+		return (put_error(file.filename, VALID_OBJECT));
 	if (display_compact(file.cputype))
 		hex_dump_compact_32(&file);
 	else

@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fat_32.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/27 15:30:35 by sfranc            #+#    #+#             */
+/*   Updated: 2019/06/27 15:30:37 by sfranc           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_otool.h"
 
-static t_ex_ret		check_archi_x86_64(t_bin_file *file, uint32_t nb_arch, \
-						struct fat_arch *arch, int *archi_x86_64)
+static t_ex_ret			check_archi_x86_64(t_bin_file *file, uint32_t nb_arch, \
+							struct fat_arch *arch, int *archi_x86_64)
 {
 	uint32_t		i;
 	void			*check;
@@ -36,9 +48,9 @@ static void				put_fat_name(t_bin_file *file, struct fat_arch *arch)
 	ft_putendl("):");
 }
 
-static t_ex_ret		loop_through_fat32(t_bin_file *file, \
-						struct fat_arch *arch, \
-						int archi_x84_64, uint32_t nb_arch)
+static t_ex_ret			loop_through_fat32(t_bin_file *file, \
+							struct fat_arch *arch, \
+							int archi_x84_64, uint32_t nb_arch)
 {
 	if (archi_x84_64 == -1)
 	{
@@ -64,8 +76,8 @@ static t_ex_ret		loop_through_fat32(t_bin_file *file, \
 	return (SUCCESS);
 }
 
-t_ex_ret			handle_fat32(t_endian endian, char *filename, \
-						size_t size, void *ptr)
+t_ex_ret				handle_fat32(t_endian endian, char *filename, \
+							size_t size, void *ptr)
 {
 	t_bin_file			file;
 	struct fat_header	*header;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/27 15:30:51 by sfranc            #+#    #+#             */
+/*   Updated: 2019/06/27 15:30:52 by sfranc           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_otool.h"
 
 static t_ex_ret		process_one_file(char *filename)
@@ -27,13 +39,13 @@ static t_ex_ret		process_one_file(char *filename)
 	return (ret);
 }
 
-int			main(int ac, char **av)
+int					main(int ac, char **av)
 {
 	t_ex_ret ret;
 
 	ret = SUCCESS;
 	if (ac < 2)
-		return(put_usage());
+		return (put_usage());
 	av++;
 	while (--ac)
 	{

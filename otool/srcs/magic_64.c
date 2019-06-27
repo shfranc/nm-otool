@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   magic_64.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/27 15:30:48 by sfranc            #+#    #+#             */
+/*   Updated: 2019/06/27 15:30:49 by sfranc           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_otool.h"
 
 static t_ex_ret			get_text_section(t_bin_file *file, \
@@ -19,12 +31,7 @@ static t_ex_ret			get_text_section(t_bin_file *file, \
 	while (i < nsects)
 	{
 		if (ft_strcmp(section->sectname, SECT_TEXT) == 0)
-		{
-			file->text_section_offset = swap32_if(section->offset, file->endian);
-			file->text_section_addr = swap64_if(section->addr, file->endian);
-			file->text_section_size = swap64_if(section->size, file->endian);
-			return (SUCCESS);
-		}
+			return (get_text_section_info_64(file, section));
 		section = (void *)section + sizeof(struct section_64);
 		i++;
 	}
@@ -44,11 +51,8 @@ static t_ex_ret			get_info_from_load_command_64(t_bin_file *file, \
 			sizeof(*segment));
 		if (!segment)
 			return (put_error(file->filename, TRUNC_OBJECT));
-		// if (ft_strcmp(segment->segname, SEG_TEXT) == 0)
-		// {
-			if (get_text_section(file, segment) == FAILURE)
-				return (FAILURE);
-		// }
+		if (get_text_section(file, segment) == FAILURE)
+			return (FAILURE);
 	}
 	return (SUCCESS);
 }
@@ -62,7 +66,7 @@ static t_ex_ret			get_load_commands_64(t_bin_file *file, \
 		sizeof(*header));
 	if (!header)
 		return (put_error(file->filename, VALID_OBJECT));
-	file->cputype = header->cputype;	
+	file->cputype = header->cputype;
 	*ncmds = swap32_if(header->ncmds, file->endian);
 	*lc = (struct load_command *)is_in_file(file, file->ptr + sizeof(*header), \
 		sizeof(**lc));
@@ -107,6 +111,9 @@ t_ex_ret				handle_64(t_endian endian, char *filename, \
 	file.end = ptr + size;
 	if (init_file_64(&file) == FAILURE)
 		return (FAILURE);
+	if (!is_in_file(&file, file.ptr + file.section_offset, \
+		file.section_size))
+		return (put_error(file.filename, VALID_OBJECT));
 	if (display_compact(file.cputype))
 		hex_dump_compact_64(&file);
 	else

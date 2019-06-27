@@ -1,43 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_archive.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/27 15:34:33 by sfranc            #+#    #+#             */
-/*   Updated: 2019/06/27 15:34:34 by sfranc           ###   ########.fr       */
+/*   Created: 2019/06/27 15:36:03 by sfranc            #+#    #+#             */
+/*   Updated: 2019/06/27 15:36:04 by sfranc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_nm.h"
-
-void		*is_in_file(t_bin_file *file, void *dest, size_t size)
-{
-	void		*max;
-
-	max = dest + size;
-	if (dest >= file->ptr && dest < file->end \
-		&& max > file->ptr && max <= file->end)
-		return (dest);
-	return (NULL);
-}
-
-uint32_t	swap32_if(uint32_t n, t_endian endian)
-{
-	if (endian == MAGIC)
-		return (n);
-	else
-		return (ft_swap_uint32(n));
-}
-
-uint64_t	swap64_if(uint64_t n, t_endian endian)
-{
-	if (endian == MAGIC)
-		return (n);
-	else
-		return (ft_swap_uint64(n));
-}
+#include "ft_otool.h"
 
 t_bool		is_archi_x86_64(cpu_type_t cpu_type)
 {

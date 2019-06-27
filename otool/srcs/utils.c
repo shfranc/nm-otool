@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/27 15:30:54 by sfranc            #+#    #+#             */
+/*   Updated: 2019/06/27 15:31:04 by sfranc           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_otool.h"
 
 void		*is_in_file(t_bin_file *file, void *dest, size_t size)
@@ -27,36 +39,19 @@ uint64_t	swap64_if(uint64_t n, t_endian endian)
 		return (ft_swap_uint64(n));
 }
 
-t_bool		display_compact(cpu_type_t cpu_type)
+t_ex_ret	get_text_section_info_32(t_bin_file *file, struct section *section)
 {
-	if (cpu_type != CPU_TYPE_X86
-	&& cpu_type != CPU_TYPE_X86_64
-	&& cpu_type != CPU_TYPE_I386)
-		return (TRUE);
-	return (FALSE);
+	file->section_offset = swap32_if(section->offset, file->endian);
+	file->section_addr = (uint64_t)swap32_if(section->addr, file->endian);
+	file->section_size = (uint64_t)swap32_if(section->size, file->endian);
+	return (SUCCESS);
 }
 
-t_bool		is_archi_x86_64(cpu_type_t cpu_type)
+t_ex_ret	get_text_section_info_64(t_bin_file *file, \
+				struct section_64 *section)
 {
-	if (cpu_type == CPU_TYPE_X86_64)
-		return (TRUE);
-	return (FALSE);
-}
-
-char		*get_archi_name(cpu_type_t cpu_type, \
-						cpu_subtype_t cpu_subtype)
-{
-	if (cpu_type == CPU_TYPE_I386)
-		return ("i386");
-	if (cpu_type == CPU_TYPE_POWERPC)
-		return ("ppc");
-	if (cpu_type == CPU_TYPE_POWERPC64)
-		return ("ppc64");
-	if (cpu_type == CPU_TYPE_ARM64)
-		return ("arm64");
-	if (cpu_type == CPU_TYPE_ARM && cpu_subtype == CPU_SUBTYPE_ARM_V7)
-		return ("armv7");
-	if (cpu_type == CPU_TYPE_ARM && cpu_subtype == CPU_SUBTYPE_ARM_V7S)
-		return ("armv7s");
-	return ("");
+	file->section_offset = swap32_if(section->offset, file->endian);
+	file->section_addr = swap64_if(section->addr, file->endian);
+	file->section_size = swap64_if(section->size, file->endian);
+	return (SUCCESS);
 }

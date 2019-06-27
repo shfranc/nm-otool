@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_otool.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sfranc <sfranc@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/27 15:31:53 by sfranc            #+#    #+#             */
+/*   Updated: 2019/06/27 15:31:55 by sfranc           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_OTOOL_H
 # define FT_OTOOL_H
 
@@ -37,13 +49,13 @@ typedef struct				s_bin_file
 	void					*end;
 	t_endian				endian;
 	cpu_type_t				cputype;
-	uint32_t				text_section_offset;
-	uint64_t				text_section_addr;
-	uint64_t				text_section_size;
+	uint32_t				section_offset;
+	uint64_t				section_addr;
+	uint64_t				section_size;
 }							t_bin_file;
 
-t_ex_ret					ft_otool(char *archive_name, char *filename, uint64_t size,
-								void *ptr);
+t_ex_ret					ft_otool(char *archive_name, char *filename, \
+								uint64_t size, void *ptr);
 t_ex_ret					handle_64(t_endian endian, char *filename, \
 								size_t size, void *ptr);
 t_ex_ret					handle_32(t_endian endian, char *filename, \
@@ -54,13 +66,17 @@ t_ex_ret					handle_fat32(t_endian endian, char *filename, \
 								size_t size, void *ptr);
 t_ex_ret					handle_fat64(t_endian endian, char *filename, \
 								size_t size, void *ptr);
-
+t_ex_ret					get_text_section_info_32(t_bin_file *file, \
+								struct section *section);
+t_ex_ret					get_text_section_info_64(t_bin_file *file, \
+								struct section_64 *section);
 t_bool						display_compact(cpu_type_t cpu_type);
+void						dump_one_byte(const void *addr, char buf[3]);
+void						dump_four_bytes(const void *addr, char buf[3]);
 void						hex_dump_64(t_bin_file *file);
 void						hex_dump_32(t_bin_file *file);
 void						hex_dump_compact_32(t_bin_file *file);
 void						hex_dump_compact_64(t_bin_file *file);
-
 void						*is_in_file(t_bin_file *file, void *dest, \
 								size_t size);
 uint32_t					swap32_if(uint32_t n, t_endian endian);

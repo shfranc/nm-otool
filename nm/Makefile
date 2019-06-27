@@ -49,14 +49,6 @@ $(PATH_OBJS)/%.o: $(PATH_SRCS)/%.c $(INCS)
 	@$(CC) $(FLAGS) -c $< -o $@ $(addprefix -I , $(INCS))
 	@echo "$(YELLOW)compil:$(RESET) $@"
 
-clean_tests:
-	@echo "cleaning old tests files..."
-	@rm -f tests/input/*.output
-
-run_tests: clean_tests
-	@printf "\033[1;33m--------------------\n%s\n--------------------\033[0m\n" "$(NAME)"
-	@python3 tests/main.py
-
 norm:
 	@norminette $(PATH_SRCS) incs
 	@make -C $(PATH_LIB) norm
