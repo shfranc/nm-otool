@@ -29,27 +29,21 @@ $(OTOOL):
 	@printf "$(YELLOW)%s$(RESET)\n" "============ OTOOL =========="
 	@make -C $(PATH_OTOOL)
 
-clean_tests:
-	@make clean_tests -C $(PATH_NM)
-	@make clean_tests -C $(PATH_OTOOL)
-
-run_tests:
-	@make run_tests -C $(PATH_NM)
-	@make run_tests -C $(PATH_OTOOL)
-
 clean:
 	@make -C $(PATH_NM) clean
 	@make -C $(PATH_OTOOL) clean
+	@make -C $(PATH_LIB) clean
 
 fclean: clean
 	@make -C $(PATH_NM) fclean
 	@make -C $(PATH_OTOOL) fclean
+	@make -C $(PATH_LIB) fclean
 
 fclean_lib:
 	@make fclean -C $(PATH_LIB)
 
 fclean_all: fclean_lib fclean
 
-re_with_lib: fclean_all all	
+re_with_lib: fclean_all all
 
 re: fclean all

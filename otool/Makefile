@@ -7,7 +7,18 @@ PATH_LIB = ../libft
 PATH_SRCS = srcs
 PATH_OBJS = objs
 
-SRCS = $(addprefix $(PATH_SRCS)/, main.c ) 
+SRCS = $(addprefix $(PATH_SRCS)/, main.c \
+	ft_otool.c \
+	magic_64.c \
+	magic_32.c \
+	fat_32.c \
+	fat_64.c \
+	dump_hexa.c \
+	archive.c \
+	utils.c \
+	utils_archive.c \
+	utils_dump_hexa.c \
+	error.c )
 OBJS = $(SRCS:$(PATH_SRCS)/%.c=$(PATH_OBJS)/%.o)
 INCS = incs $(PATH_LIB)/includes
 
@@ -34,13 +45,9 @@ $(PATH_OBJS)/%.o: $(PATH_SRCS)/%.c $(INCS)
 	@$(CC) $(FLAGS) -c $< -o $@ $(addprefix -I , $(INCS))
 	@echo "$(YELLOW)compil:$(RESET) $@"
 
-clean_tests:
-	@echo "cleaning old tests files..."
-	# @rm -f tests/input/*.output
-
-run_tests: clean_tests
-	@printf "\033[1;33m--------------------\n%s\n--------------------\033[0m\n" "$(NAME)"
-	# @python3 tests/main.py
+norm:
+	@norminette $(PATH_SRCS) incs
+	@make -C $(PATH_LIB) norm
 
 clean:
 	@rm -rf $(OBJS)
@@ -56,6 +63,6 @@ fclean_lib:
 
 fclean_all: fclean_lib fclean
 
-re_with_lib: fclean_all all	
+re_with_lib: fclean_all all
 
 re: fclean all

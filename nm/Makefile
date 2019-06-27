@@ -9,14 +9,18 @@ PATH_OBJS = objs
 
 SRCS = $(addprefix $(PATH_SRCS)/, main.c \
 	ft_nm.c \
+	macho_32_init.c \
 	macho_32.c \
+	macho_64_init.c \
 	macho_64.c \
 	fat_32.c \
+	fat_64.c \
 	archive.c \
 	print.c \
 	type.c \
 	sort.c \
-	check.c \
+	comp.c \
+	utils.c \
 	error.c \
 	options.c )
 OBJS = $(SRCS:$(PATH_SRCS)/%.c=$(PATH_OBJS)/%.o)
@@ -44,14 +48,6 @@ $(PATH_OBJS)/%.o: $(PATH_SRCS)/%.c $(INCS)
 	@test -d $(PATH_OBJS) || mkdir $(PATH_OBJS)
 	@$(CC) $(FLAGS) -c $< -o $@ $(addprefix -I , $(INCS))
 	@echo "$(YELLOW)compil:$(RESET) $@"
-
-clean_tests:
-	@echo "cleaning old tests files..."
-	@rm -f tests/input/*.output
-
-run_tests: clean_tests
-	@printf "\033[1;33m--------------------\n%s\n--------------------\033[0m\n" "$(NAME)"
-	@python3 tests/main.py
 
 norm:
 	@norminette $(PATH_SRCS) incs
